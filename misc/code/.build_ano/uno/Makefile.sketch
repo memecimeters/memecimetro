@@ -1,0 +1,14 @@
+
+
+
+
+
+.build_ano/uno/src/sketch.ino.cpp : src/sketch.ino
+	@mkdir -p .build_ano/uno/src
+	@echo [93msrc/sketch.ino[0m
+	@/usr/local/bin/ano preproc --source-dir src  -o $@ $^
+
+
+all : .build_ano/uno/src/sketch.ino.cpp
+	@true
+
