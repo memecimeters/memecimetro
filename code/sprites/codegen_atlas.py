@@ -113,7 +113,7 @@ void blit_cols(char *p, char h, char r, char c, char x, char y) {
         for(i=0; i<c; i++) {
             for(j=0; j<h; j++) {
                 if (p[i+t*c] & (1 << j)) {
-                    pcd8544_set_pixel_fb (x+i, y+j+t*8, PIXEL_STATE_ON);
+                    setPixel (x+i, y+j+t*8);
                 }
             }
         }
