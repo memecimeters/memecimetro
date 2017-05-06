@@ -103,8 +103,7 @@ for fname, fdata in data['frames'].items():
 
     sprites[spritename] = sprite
 
-with open("atlas_gen.c", "w") as f:
-
+with open("../src/atlas_gen.h", "w") as f:
     print ("""/// generado por atlas_codegen.py
 
 void blit_cols(uint8_t *p, uint8_t h, uint8_t r, uint8_t c, uint8_t x, uint8_t y) {
@@ -127,10 +126,5 @@ void _clear(uint8_t x, uint8_t y, uint8_t w, uint8_t h) {
 """, file=f)
 
     for name in sorted(sprites.keys()):
-        sprite_to_fun(name, sprites[name], f)
-
-with open("atlas_gen.h", "w") as f:
-    print ("""/// generado por atlas_codegen.py
-""", file=f)
-    for name in sorted(sprites.keys()):
         sprite_to_header(name, sprites[name], f)
+        sprite_to_fun(name, sprites[name], f)
