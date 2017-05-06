@@ -52,7 +52,7 @@ def sprite_to_rocs(sprite):
 def sprite_to_header(varname, sprite, out):
     frames = len(sprite['frames'])
     print("#define %s_len %d" % (varname, frames), file=out)
-    print("void s_%s(uint8_t frame, uint8_t x, uint8_t y);" % varname, file=out)
+    print("void s_%s(char frame, char x, char y);" % varname, file=out)
     print(file=out)
 
 def sprite_to_fun(varname, sprite, out):
@@ -63,11 +63,11 @@ def sprite_to_fun(varname, sprite, out):
     size = rows * cols
     frames = len(rocs)
     print("#define %s_len %d" % (varname, frames), file=out)
-    print("void s_%s(uint8_t frame, uint8_t x, uint8_t y) {" % varname, file=out)
+    print("void s_%s(char frame, char x, char y) {" % varname, file=out)
     print("""
-    uint8_t h = %d, r = %d, c = %d;
+    char h = %d, r = %d, c = %d;
 
-    uint8_t rocbufs[%d][%d] = {"""  % (sprite['h'], rows, cols, frames, size), file=out)
+    char rocbufs[%d][%d] = {"""  % (sprite['h'], rows, cols, frames, size), file=out)
     for roc in rocs:
         print("        " + roc_to_hex(roc) +  ", ", file=out)
     print("    };", file=out)
@@ -106,9 +106,9 @@ for fname, fdata in data['frames'].items():
 with open("../src/atlas_gen.h", "w") as f:
     print ("""/// generado por atlas_codegen.py
 
-void blit_cols(uint8_t *p, uint8_t h, uint8_t r, uint8_t c, uint8_t x, uint8_t y) {
+void blit_cols(char *p, char h, char r, char c, char x, char y) {
     // optimizar, cachos de columna en vez de pixel a pixel
-    uint8_t i, j, t;
+    char i, j, t;
     for(t=0; t<r; t++) {
         for(i=0; i<c; i++) {
             for(j=0; j<h; j++) {
@@ -120,7 +120,7 @@ void blit_cols(uint8_t *p, uint8_t h, uint8_t r, uint8_t c, uint8_t x, uint8_t y
     }
 };
 
-void _clear(uint8_t x, uint8_t y, uint8_t w, uint8_t h) {
+void _clear(char x, char y, char w, char h) {
     // TODO
 };
 """, file=f)
