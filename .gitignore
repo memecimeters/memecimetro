@@ -6,3 +6,7 @@ atlas*
 deps/aseprite/aseprite
 deps/arturo_ano/Arturo
 deps/arduino/arduino*
+
+*_x2.ase
+
+simduino*
