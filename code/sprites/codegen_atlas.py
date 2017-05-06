@@ -83,6 +83,26 @@ def sprite_to_header(varname, sprite, out):
     print("void s_%s(char frame, char x, char y);" % varname, file=out)
     print(file=out)
 
+def sprite_to_pgm(varname, sprite, out):
+    rocs = sprite_to_rocs(sprite)
+    roc = rocs[0]
+    rows = len(roc)
+    cols = len(roc[0])
+    size = rows * cols
+    frames = len(rocs)
+
+    print("const char pgm_%s[%d][%d] PROGMEM = {""" % (
+        varname,
+        frames,
+        size,
+    ), file=out)
+
+    for roc in rocs:
+        print("        " + roc_to_hex(roc) +  ", ", file=out)
+    print("    };", file=out)
+
+
+
 def sprite_to_fun(varname, sprite, out):
     rocs = sprite_to_rocs(sprite)
     roc = rocs[0]
@@ -92,17 +112,14 @@ def sprite_to_fun(varname, sprite, out):
     frames = len(rocs)
     print("#define %s_len %d" % (varname, frames), file=out)
     print("void s_%s(char frame, char x, char y) {" % varname, file=out)
+
     print("""
     char h = %d, r = %d, c = %d;
-
-    char rocbufs[%d][%d] = {"""  % (sprite['h'], rows, cols, frames, size), file=out)
-    for roc in rocs:
-        print("        " + roc_to_hex(roc) +  ", ", file=out)
-    print("    };", file=out)
+    """  % (sprite['h'], rows, cols), file=out)
     print_sprite_imgs(sprite, out);
     print("""
-    blit_cols(rocbufs[frame], h, r, c, x, y);
-""", file=out)
+    blit_cols(pgm_%s[frame], h, r, c, x, y);
+""" % varname, file=out)
 
     print("};", file=out)
 
@@ -136,13 +153,23 @@ with open("../src/atlas_gen.h", "w") as f:
 #ifndef _ATLAS_GEN_H
 #define _ATLAS_GEN_H
 
-void blit_cols(char *p, char h, char r, char c, char x, char y) {
+void blit_cols(const char *p, char h, char r, char c, char x, char y);
+""", file=f)
+
+    for name in sorted(sprites.keys()):
+        sprite_to_header(name, sprites[name], f)
+        sprite_to_pgm(name, sprites[name], f)
+        sprite_to_fun(name, sprites[name], f)
+
+    print("""
+void blit_cols(const char *p, char h, char r, char c, char x, char y) {
     // optimizar, cachos de columna en vez de pixel a pixel
-    char i, j, t;
+    char i, j, t, b;
     for(t=0; t<r; t++) {
         for(i=0; i<c; i++) {
             for(j=0; j<8; j++) {
-                if (p[i+t*c] & (1 << j)) {
+                b = pgm_read_byte(p+i+t*c);
+                if (b & (1 << j)) {
                     setPixel (x+i, y+j+t*8);
                 }
             }
@@ -150,12 +177,4 @@ void blit_cols(char *p, char h, char r, char c, char x, char y) {
     }
 };
 
-void _clear(char x, char y, char w, char h) {
-    // TODO
-};
-""", file=f)
-
-    for name in sorted(sprites.keys()):
-        sprite_to_header(name, sprites[name], f)
-        sprite_to_fun(name, sprites[name], f)
-    print("#endif", file=f)
+#endif""", file=f)
