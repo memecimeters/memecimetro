@@ -9,6 +9,16 @@ from PIL import Image
 MAX_OUT_WIDTH = 80
 BLACK = (0, 0, 0, 255,)
 
+def print_img(im, out):
+    w, h = im.size
+    for y in range(h):
+        print("        //", end="", file=out)
+        for x in range(w):
+            p = im.getpixel((x, y))
+            print(" ■" if p == BLACK else " □", end="", file=out)
+        print(file=out)
+        if y % 8 == 7:
+            print(file=out)
 
 def img_to_roc(im):
     w, h = im.size
@@ -49,9 +59,27 @@ def sprite_to_rocs(sprite):
         rocs.append(img_to_roc(im))
     return rocs
 
+def print_sprite_imgs(sprite, out):
+    rocs = []
+    for index in sorted(sprite['frames'].keys()):
+        print("\n        // frame %d" % index, file=out)
+        pos = sprite['frames'][index]
+        im = sheet.crop((
+            pos['x'],
+            pos['y'],
+            pos['x'] + sprite['w'],
+            pos['y'] + sprite['h'],
+        ))
+        print_img(im, out)
+    return rocs
+
 def sprite_to_header(varname, sprite, out):
+    w = sprite['w']
+    h = sprite['h']
     frames = len(sprite['frames'])
     print("#define %s_len %d" % (varname, frames), file=out)
+    print("#define %s_w %d" % (varname, w), file=out)
+    print("#define %s_h %d" % (varname, h), file=out)
     print("void s_%s(char frame, char x, char y);" % varname, file=out)
     print(file=out)
 
@@ -71,7 +99,7 @@ def sprite_to_fun(varname, sprite, out):
     for roc in rocs:
         print("        " + roc_to_hex(roc) +  ", ", file=out)
     print("    };", file=out)
-
+    print_sprite_imgs(sprite, out);
     print("""
     blit_cols(rocbufs[frame], h, r, c, x, y);
 """, file=out)
