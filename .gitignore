@@ -10,3 +10,6 @@ deps/arduino/arduino*
 *_x2.ase
 
 simduino*
+
+*.d
+*.o

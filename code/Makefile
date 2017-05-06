@@ -19,5 +19,5 @@ serial:
 virt: build runsim
 
 runsim:
-	../board_pcd8544/obj-x86_64-linux-gnu/simduino_pcd8544demo.elf &
+	LD_LIBRARY_PATH=../deps/simavr/simavr/simavr/obj-x86_64-linux-gnu/ ../virt/obj-x86_64-linux-gnu/simduino_pcd8544demo.elf &
 	ano serial -p /tmp/simavr-uart0
