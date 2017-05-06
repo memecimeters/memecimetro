@@ -1,6 +1,8 @@
 /* based on https://learn.sparkfun.com/tutorials/graphic-lcd-hookup-guide */
 #include <SPI.h>
 #include "LCD_Functions.h"
+#include "atlas_gen.h"
+unsigned int global_clock = 0;
 
 void setup()
 {
@@ -21,11 +23,41 @@ void setup()
   Serial.println(F("1, 2, 3, 4, 5, 6 cambian de frame"));
 }
 
+void setCorners() {
+  char u = 0, d = LCD_HEIGHT-corner_h, l = 0, r = LCD_WIDTH-corner_w;
+  s_corner(0, l, u);
+  s_corner(1, r, u);
+  s_corner(2, r, d);
+  s_corner(3, l, d);
+}
+
+void setSpeedCombo() {
+  s_speedometer(global_clock % speedometer_len, 8, 3);
+}
+
+void setIcons() {
+  int x = 18, y = 15, i = 0;
+  s_crankset(global_clock % crankset_len, 18, y + (i++)*8);
+  s_road(global_clock % road_len, 18, y + (i++)*8);
+  s_bars(global_clock % bars_len, 18, y + (i++)*8);
+  s_sandclock(global_clock % sandclock_len, 18, y + (i++)*8);
+}
+
+void setUnnyHUD() {
+  setCorners();
+  setSpeedCombo();
+  setIcons();
+
+
   updateDisplay();
 }
 
 void loop()
 {
+  clearDisplay(WHITE);
+  setUnnyHUD();
 
 
+  global_clock++;
+  delay(200);
 }
