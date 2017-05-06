@@ -80,6 +80,12 @@ def sprite_to_header(varname, sprite, out):
     print("#define %s_len %d" % (varname, frames), file=out)
     print("#define %s_w %d" % (varname, w), file=out)
     print("#define %s_h %d" % (varname, h), file=out)
+
+    print("extern const char pgm_%s[%d][%d] PROGMEM;" % (
+        varname,
+        frames,
+        w*math.ceil(h/8),
+    ), file=out)
     print("void s_%s(char frame, char x, char y);" % varname, file=out)
     print(file=out)
 
@@ -153,15 +159,23 @@ with open("../src/atlas_gen.h", "w") as f:
 #ifndef _ATLAS_GEN_H
 #define _ATLAS_GEN_H
 
+#include <avr/pgmspace.h>
+
 void blit_cols(const char *p, char h, char r, char c, char x, char y);
 """, file=f)
 
     for name in sorted(sprites.keys()):
         sprite_to_header(name, sprites[name], f)
-        sprite_to_pgm(name, sprites[name], f)
-        sprite_to_fun(name, sprites[name], f)
 
     print("""
+
+#endif""", file=f)
+
+with open("../src/atlas_gen.cpp", "w") as f:
+    print("""/// generado por atlas_codegen.py
+#include "atlas_gen.h"
+#include "LCD_Functions.h"
+
 void blit_cols(const char *p, char h, char r, char c, char x, char y) {
     // optimizar, cachos de columna en vez de pixel a pixel
     char i, j, t, b;
@@ -175,6 +189,8 @@ void blit_cols(const char *p, char h, char r, char c, char x, char y) {
             }
         }
     }
-};
+};""", file=f)
 
-#endif""", file=f)
+    for name in sorted(sprites.keys()):
+        sprite_to_pgm(name, sprites[name], f)
+        sprite_to_fun(name, sprites[name], f)
