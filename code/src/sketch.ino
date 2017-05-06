@@ -40,6 +40,9 @@ void setBigText(char *s, char x, char y) {
     } else if ((*s) == ':') {
        c = 11;
        dx = font_x2_w/5*scale;
+    } else if ((*s) == ' ') {
+      c = 12;
+      dx = 0;
     } else {
        c = *s - '0';
        dx = 0;
@@ -60,6 +63,9 @@ void setText(char *s, char x, char y) {
     } else if ((*s) == ':') {
        c = 11;
        dx = font_w/5*scale;
+    } else if ((*s) == ' ') {
+      c = 12;
+      dx = 0;
     } else {
        c = *s - '0';
        dx = 0;
