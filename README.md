@@ -1,6 +1,6 @@
 # memecimetro
 
-### arduino nano + display nokia 5110 + bicicletas = ???
+### arduino nano + display nokia 5110 + reed switch + bicicletas = ???
 
 #### cosas que usamos
 - [Arduino](https://www.arduino.cc/)
