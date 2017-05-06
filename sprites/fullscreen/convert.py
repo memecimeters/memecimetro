@@ -11,6 +11,20 @@ VAR_NAME = "frame"
 VAR_DEC_MEMEDUINO = "static const char %s[%d][%d] PROGMEM = {"
 VAR_DEC_SIMAVR = "const uint8_t %s[%d][%d] PROGMEM = {"
 
+BLACK = (0, 0, 0, 255)
+
+def print_img(im):
+    w, h = im.size
+    for y in range(h):
+        print("        //", end="")
+        for x in range(w):
+            p = im.getpixel((x, y))
+            print(" ■" if p == BLACK else " □", end="")
+        print()
+        # if y % 8 == 7:
+        #     print()
+
+
 import sys
 
 frames = []
@@ -30,11 +44,7 @@ for filename in sys.argv[1:]:
     colors = sorted(colors, key=lambda p: sum(p))
     fg, bg = colors
 
-    for y in range(HEIGHT):
-        for x in range(WIDTH):
-            p = im.getpixel((x, y))
-    #        print(" " if p == bg else "o", end="")
-    #    print()
+    print_img(im)
 
     data = []
     for r in range(ROWS):
