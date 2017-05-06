@@ -139,7 +139,7 @@ void blit_cols(char *p, char h, char r, char c, char x, char y) {
     char i, j, t;
     for(t=0; t<r; t++) {
         for(i=0; i<c; i++) {
-            for(j=0; j<h; j++) {
+            for(j=0; j<8; j++) {
                 if (p[i+t*c] & (1 << j)) {
                     setPixel (x+i, y+j+t*8);
                 }
