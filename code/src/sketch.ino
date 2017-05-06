@@ -2,7 +2,9 @@
 #include <SPI.h>
 #include "LCD_Functions.h"
 #include "atlas_gen.h"
+
 unsigned int global_clock = 0;
+char cadence = 0;
 
 void setup()
 {
@@ -97,6 +99,15 @@ void setIcons() {
   s_sandclock(global_clock % sandclock_len, 18, y + (i++)*8);
 }
 
+void setCadence() {
+  if (global_clock % 6 == 0) {
+    cadence = random(100);
+  }
+  char buf[10];
+  snprintf(buf, 10, "%4d", cadence);
+  setText(buf, 22, 16);
+}
+
 void setTime() {
   char x = 28, y = 40;
   char m, s;
@@ -111,8 +122,9 @@ void setUnnyHUD() {
   setCorners();
   setSpeedCombo();
   setIcons();
-  setTime();
 
+  setCadence();
+  setTime();
 
   updateDisplay();
 }
