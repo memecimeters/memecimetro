@@ -31,7 +31,25 @@ void setCorners() {
   s_corner(3, l, d);
 }
 
+void setSpeedBig(double speed) {
+  char buf[16], *p, x = 38, y = 3;
+  int c;
+  dtostrf(speed, 4, 1, buf);
+  p = &buf[0];
+
+  while (*p) {
+    if ((*p) == '.') { c = 10; x-= font_x2_w/5*2;}
+    else { c = *p - '0';}
+    s_font_x2(c, x, y);
+    x += font_x2_w + 2;
+    if ((*p) == '.') { x-= font_x2_w/5*2;}
+    p++;
+  }
+}
+
 void setSpeedCombo() {
+  double speed = 12.4;
+  setSpeedBig(speed);
   s_speedometer(global_clock % speedometer_len, 8, 3);
 }
 
