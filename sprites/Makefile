@@ -1,7 +1,15 @@
-all: atlas.png atlas.json
+ASEPRITE_BIN = ../deps/aseprite/aseprite/build/bin/aseprite
 
-atlas%png atlas%json: font-x2.ase
-	../deps/aseprite/aseprite/build/bin/aseprite -b *.ase --sheet-pack --sheet atlas$*png --data atlas$*json
+all: clean atlas_gen.c atlas_gen.h
 
-font-x2.ase:
-	../deps/aseprite/aseprite/build/bin/aseprite -b font.ase --scale 2 --save-as font-x2.ase
+clean:
+	rm -f atlas_gen.*
+
+atlas_gen.%: atlas.png atlas.json
+	./atlas_codegen.py
+
+atlas.%: font_x2.ase
+	${ASEPRITE_BIN} -b *.ase --sheet-pack --sheet atlas.png --data atlas.json
+
+%_x2.ase:
+	${ASEPRITE_BIN} -b $*.ase --scale 2 --save-as $@
