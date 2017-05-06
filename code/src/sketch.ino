@@ -118,12 +118,25 @@ void setTime() {
   snprintf(buf, 10, "%02d:%02d", m, s);
   setText(buf, x, y);
 }
+
+void setDistance() {
+  char buf[16];
+  double dist = 1.2f*global_clock*global_clock;
+  if (dist > 9999.9) {
+    dist = 9999.9;
+  }
+  dtostrf(dist, 5, 1, buf);
+  setText(buf, 28, 24);
+}
+
 void setUnnyHUD() {
   setCorners();
   setSpeedCombo();
   setIcons();
 
   setCadence();
+  setDistance();
+  // ???
   setTime();
 
   updateDisplay();
