@@ -19,4 +19,5 @@ serial:
 virt: build runsim
 
 runsim:
-	../board_pcd8544/obj-x86_64-linux-gnu/simduino_pcd8544demo.elf
+	../board_pcd8544/obj-x86_64-linux-gnu/simduino_pcd8544demo.elf &
+	ano serial -p /tmp/simavr-uart0
