@@ -31,20 +31,30 @@ void setCorners() {
   s_corner(3, l, d);
 }
 
-void setSpeedBig(double speed) {
-  char buf[16], *p, x = 38, y = 3;
-  int c;
-  dtostrf(speed, 4, 1, buf);
-  p = &buf[0];
-
-  while (*p) {
-    if ((*p) == '.') { c = 10; x-= font_x2_w/5*2;}
-    else { c = *p - '0';}
+void setBigText(char *s, char x, char y) {
+  int c, dx = 0, scale = 2;
+  while (*s) {
+    if ((*s) == '.') {
+       c = 10;
+       dx = font_x2_w/5*scale;
+    } else if ((*s) == ':') {
+       c = 11;
+       dx = font_x2_w/5*scale;
+    } else {
+       c = *s - '0';
+       dx = 0;
+    }
+    x -= dx;
     s_font_x2(c, x, y);
-    x += font_x2_w + 2;
-    if ((*p) == '.') { x-= font_x2_w/5*2;}
-    p++;
+    x += font_x2_w + scale - dx;
+    s++;
   }
+}
+
+void setSpeedBig(double speed) {
+  char buf[16];
+  dtostrf(speed, 4, 1, buf);
+  setBigText(buf, 38, 3);
 }
 
 void setSpeedCombo() {
