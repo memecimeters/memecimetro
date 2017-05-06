@@ -133,6 +133,8 @@ for fname, fdata in data['frames'].items():
 
 with open("../src/atlas_gen.h", "w") as f:
     print ("""/// generado por atlas_codegen.py
+#ifndef _ATLAS_GEN_H
+#define _ATLAS_GEN_H
 
 void blit_cols(char *p, char h, char r, char c, char x, char y) {
     // optimizar, cachos de columna en vez de pixel a pixel
@@ -156,3 +158,4 @@ void _clear(char x, char y, char w, char h) {
     for name in sorted(sprites.keys()):
         sprite_to_header(name, sprites[name], f)
         sprite_to_fun(name, sprites[name], f)
+    print("#endif", file=f)
