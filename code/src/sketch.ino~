@@ -96,7 +96,7 @@ void setIcons() {
   s_crankset(global_clock % crankset_len, 18, y + (i++)*8);
   s_road(global_clock % road_len, 18, y + (i++)*8);
   s_bars(global_clock % bars_len, 18, y + (i++)*8);
-  s_sandclock(global_clock % sandclock_len, 18, y + (i++)*8);
+  s_sandclock(global_clock % sandclock_len, 26, y + (i++)*8);
 }
 
 void setCadence() {
@@ -136,7 +136,7 @@ void setUnnyHUD() {
 
   setCadence();
   setDistance();
-  // MAX SPEED VA ACÁ
+  // ???
   setTime();
 
   updateDisplay();
