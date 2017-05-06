@@ -1,10 +1,7 @@
 .build_ano
 .build_ino
 
-sprites/atlas_gen.c
-sprites/atlas_gen.h
-sprites/atlas.png
-sprites/atlas.json
+atlas*
 
 deps/aseprite/aseprite
 deps/arturo_ano/Arturo
