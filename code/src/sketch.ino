@@ -1,5 +1,5 @@
 /* based on https://learn.sparkfun.com/tutorials/graphic-lcd-hookup-guide */
-#include <SPI.h>
+#include "SPI.h"
 #include "LCD_Functions.h"
 #include "atlas_gen.h"
 
