@@ -1,10 +1,12 @@
-all: clean build upload serial
+all: build upload serial
 
 clean:
 	ano clean
+	rm -f src/atlas_gen*
 	make -C sprites clean
 
 build:
+	make -C sprites
 	ano build
 
 upload:

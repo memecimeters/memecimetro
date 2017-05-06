@@ -3,7 +3,7 @@ ASEPRITE_BIN = ../../deps/aseprite/aseprite/build/bin/aseprite
 all: clean atlas_gen.h
 
 clean:
-	rm -f atlas_gen.* atlas.png atlas.json
+	rm -f atlas.png atlas.json
 
 atlas_gen.%: atlas.png
 	./codegen_atlas.py
