@@ -91,10 +91,21 @@ void setIcons() {
   s_sandclock(global_clock % sandclock_len, 18, y + (i++)*8);
 }
 
+void setTime() {
+  char x = 28, y = 40;
+  char m, s;
+  int g = global_clock / 6;
+  s = g % 60;
+  m = g - s;
+  char buf[10];
+  snprintf(buf, 10, "%02d:%02d", m, s);
+  setText(buf, x, y);
+}
 void setUnnyHUD() {
   setCorners();
   setSpeedCombo();
   setIcons();
+  setTime();
 
 
   updateDisplay();
