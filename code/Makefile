@@ -1,4 +1,8 @@
-all: build upload serial
+all: clean build upload serial
+
+clean:
+	ano clean
+	make -C sprites clean
 
 build:
 	ano build
@@ -9,5 +13,3 @@ upload:
 serial:
 	ano serial
 
-clean:
-	ano clean
