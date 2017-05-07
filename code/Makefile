@@ -1,4 +1,4 @@
-OBJ := ${shell gcc -dumpmachine}
+OBJ := obj-${shell gcc -dumpmachine}
 
 all: build upload serial
 
