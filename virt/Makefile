@@ -26,13 +26,12 @@ IPATH += ${simavr}/simavr/sim
 VPATH = .
 VPATH += ${simavr}/examples/parts
 
-LDFLAGS += -lpthread -lutil -L${simavr}/simavr/obj-x86_64-linux-gnu
-
+include ${simavr}/Makefile.common
 include ${simavr}/examples/Makefile.opengl
 
-all: lib obj ${target}
+LDFLAGS += -lpthread -lutil -L${simavr}/simavr/${OBJ}
 
-include ${simavr}/Makefile.common
+all: lib obj ${target}
 
 board = ${OBJ}/${target}.elf
 

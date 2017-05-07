@@ -1,0 +1,13 @@
+base-devel
+git
+avr-libc
+glu
+freeglut3
+python
+python-pillow
+python2
+python2-setuptools
+cmake
+ninja
+avrdude
+picocom

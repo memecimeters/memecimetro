@@ -1,0 +1,10 @@
+g++
+libx11-dev
+libxcursor-dev
+cmake
+ninja-build
+gcc-avr
+avrdude
+libelf-dev
+freeglut3-dev
+avr-libc

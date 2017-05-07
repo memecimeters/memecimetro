@@ -1,3 +1,5 @@
+OBJ := ${shell gcc -dumpmachine}
+
 all: build upload serial
 
 clean:
@@ -19,5 +21,5 @@ serial:
 virt: build runsim
 
 runsim:
-	LD_LIBRARY_PATH=../deps/simavr/simavr/simavr/obj-x86_64-linux-gnu/ ../virt/obj-x86_64-linux-gnu/simduino_pcd8544demo.elf &
+	LD_LIBRARY_PATH=../deps/simavr/simavr/simavr/${OBJ}/ ../virt/${OBJ}/simduino_pcd8544demo.elf &
 	ano serial -p /tmp/simavr-uart0
