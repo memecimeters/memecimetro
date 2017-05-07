@@ -15,7 +15,7 @@ void setnounnySpeedBig(double speed) {
 void setnounnySpeedCombo() {
   double speed = 44;
   setnounnySpeedBig(speed);
-  s_speedometer(global_clock % speedometer_len, 1, 6);
+  s_speedometer(global_clock/4 % speedometer_len, 1, 6);
 }
 
 void setnounnyIconsleft() {
@@ -36,7 +36,7 @@ void setnounnyCadence() {
   }
   char buf[10];
   snprintf(buf, 10, "%4d", cadence);
-  setText(buf, 10, 27);
+  setText(buf, 10, 31);
 }
 
 void setnounnyDistance() {
