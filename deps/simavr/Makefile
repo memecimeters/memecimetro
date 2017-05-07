@@ -1,7 +1,7 @@
-all: clone
+all: clone simavr
 
 clone:
 	git clone https://github.com/buserror/simavr.git
 
-simavr
+simavr:
 	make -C simavr 
