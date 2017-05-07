@@ -11,7 +11,7 @@ void setCorners() {
 }
 
 void setBigText(char *s, char x, char y) {
-  int c, dx = 0, scale = 2;
+  int c, dx = 0, scale = 3;
   while (*s) {
     if ((*s) == '.') {
        c = 10;
@@ -29,6 +29,29 @@ void setBigText(char *s, char x, char y) {
     x -= dx;
     s_font_x2(c, x, y);
     x += font_x2_w + scale - dx;
+    s++;
+  }
+}
+
+void setBiggerText(char *s, char x, char y) {
+  int c, dx = 0, scale = 2;
+  while (*s) {
+    if ((*s) == '.') {
+       c = 10;
+       dx = font_x3_w/5*scale;
+    } else if ((*s) == ':') {
+       c = 11;
+       dx = font_x3_w/5*scale;
+    } else if ((*s) == ' ') {
+      c = 12;
+      dx = 0;
+    } else {
+       c = *s - '0';
+       dx = 0;
+    }
+    x -= dx;
+    s_font_x3(c, x, y);
+    x += font_x3_w + scale - dx;
     s++;
   }
 }

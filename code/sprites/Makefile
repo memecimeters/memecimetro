@@ -13,3 +13,9 @@ atlas.png: font_x2.ase
 
 %_x2.ase:
 	${ASEPRITE_BIN} -b $*.ase --scale 2 --save-as $@
+
+atlas.png: font_x3.ase
+	${ASEPRITE_BIN} -b *.ase --sheet-pack --sheet atlas.png --data atlas.json
+
+%_x3.ase:
+	${ASEPRITE_BIN} -b $*.ase --scale 3 --save-as $@

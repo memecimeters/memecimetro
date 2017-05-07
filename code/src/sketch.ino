@@ -1,6 +1,7 @@
 /* based on https://learn.sparkfun.com/tutorials/graphic-lcd-hookup-guide */
 
 #include "LCD_Functions.h"
+//#include "ui_nounny.h"
 #include "ui_unny.h"
 
 unsigned int global_clock = 0;
@@ -27,6 +28,7 @@ void setup()
 void loop()
 {
   clearDisplay(WHITE);
+  //setnounnyHUD();
   setUnnyHUD();
   updateDisplay();
 

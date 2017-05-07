@@ -9,6 +9,7 @@ extern double cadence;
 
 void setCorners();
 void setBigText(char *s, char x, char y);
+void setBiggerText(char *s, char x, char y);
 void setText(char *s, char x, char y);
 
 #endif
