@@ -2,7 +2,7 @@
 
 #include <Arduino.h>
 
-#include "atlas_gen.h"
+#include "sprites.h"
 #include "ui_common.h"
 
 

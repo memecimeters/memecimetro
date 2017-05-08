@@ -1,13 +1,12 @@
 .build_ano
 .build_ino
 
-atlas*
 
-deps/aseprite/aseprite
 deps/arturo_ano/Arturo
 deps/arduino/arduino*
 
-*_x?.ase
+code/src/sprites.*
+code/sprites/frames/*
 
 *.bin
 *.elf

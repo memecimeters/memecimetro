@@ -11,3 +11,4 @@ cmake
 ninja
 avrdude
 picocom
+imagemagick
