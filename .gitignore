@@ -3,11 +3,10 @@
 
 atlas*
 
-deps/aseprite/aseprite
 deps/arturo_ano/Arturo
 deps/arduino/arduino*
 
-*_x?.ase
+code/sprites/frames/*
 
 *.bin
 *.elf

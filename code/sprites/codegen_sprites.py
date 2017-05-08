@@ -1,183 +1,242 @@
 #!/usr/bin/python3
 
-import json
 import math
+import os
+from subprocess import call
 
 from PIL import Image
 
+FRAMES_DIR = 'frames/'
+BLACK = (0, 255,)
 
-MAX_OUT_WIDTH = 80
-BLACK = (0, 0, 0, 255,)
+TO_SCALE = [
+    ('font', (2, 3,)),  # font_x2, font_x3
+#    ('corners', (16,)),  # corners_x16
+]
 
-def print_img(im, out):
-    w, h = im.size
-    for y in range(h):
-        print("        //", end="", file=out)
-        for x in range(w):
-            p = im.getpixel((x, y))
-            print(" ■" if p == BLACK else " □", end="", file=out)
-        print(file=out)
+
+class Sprite:
+    def __init__(self, name, frames):
+        print('constructing Sprite %s' % name)
+        self.name = name
+        self.frames = frames
+
+        f0 = frames[0]
+        self.w = f0.w
+        self.h = f0.h
+        self.n_rows = f0.n_rows
+        self.frame_bytecount = f0.bytecount
+
+        for frame in frames:
+            frame.sprite = self
+            assert frame.w == self.w
+            assert frame.h == self.h
+
+        self.len = len(frames)
+
+
+class Frame:
+    def __init__(self, im):
+        self.im = im
+        self.comment_lines = []
+        self.roc = []
+        self.hex = ""
+
+        self.w, self.h = im.size
+        self.n_rows = math.ceil(self.h / 8)
+        self.bytecount = self.w * self.n_rows
+
+        for _ in range(self.n_rows):
+            self.roc.append([0 for _ in range(self.w)])
+
+        for y in range(self.h):
+            line = ""
+            r = y // 8
+            o = y - r * 8
+
+            for x in range(self.w):
+                p = im.getpixel((x, y))
+                if p == BLACK:
+                    self.roc[r][x] |= 1 << o
+
+                line += (" ■" if p == BLACK else " □")
+
+            self.comment_lines.append(line)
+
+        self.hex = "{"
+        for row in self.roc:
+            for col in row:
+                self.hex += " 0x%02x," % col
+        self.hex += " }"
+
+
+
+
+
+def find_gifs():
+    spritenames = []
+
+    # get gifs
+    files = [f for f in os.listdir('.') if os.path.isfile(f)]
+    for f in files:
+        if not f.endswith('.gif'):
+            continue
+        s = f[:-4]
+        spritenames.append(s)
+
+    return spritenames
+
+def explode(name):
+    print('exploding %s' % name)
+
+    call([
+        'convert',
+        '-coalesce',
+        name + '.gif',
+        FRAMES_DIR + name + '.%04d.png',
+    ])
+
+
+def scale(name, factor):
+    print('scaling %s x%d' % (name, factor))
+
+    files = [f for f in os.listdir(FRAMES_DIR) if os.path.isfile(FRAMES_DIR + f)]
+    for f in files:
+        if not f.startswith(name):
+            continue
+        tail = f[len(name):]
+        call([
+            'convert',
+            FRAMES_DIR + f,
+            '-scale', str(factor*100) + '%',
+            FRAMES_DIR + '%s_x%d' % (name, factor) + tail,
+        ])
+
+
+def explode_and_scale(spritenames, to_scale={}):
+    # explode them into frames
+    for name in spritenames:
+        explode(name)
+
+    # make scaled versions of sprites
+    for name, factors in to_scale:
+        if name not in spritenames:
+            continue
+
+        for factor in factors:
+            scale(name, factor)
+            spritenames.append('%s_x%d' % (name, factor))
+
+    return spritenames
+
+
+def read_sprites():
+    sprite_frames = {}
+
+    files = [f for f in os.listdir(FRAMES_DIR) if os.path.isfile(FRAMES_DIR + f)]
+    for f in sorted(files):
+        if not f.endswith('.png'):
+            continue
+
+        im = Image.open(FRAMES_DIR + f)
+        name, frame, png = f.split('.')
+
+        if name not in sprite_frames:
+            sprite_frames[name] = []
+
+        sprite_frames[name].append(Frame(im))
+
+    sprites = []
+    for name in sprite_frames.keys():
+        sprites.append(Sprite(name, sprite_frames[name]))
+
+    return sprites
+
+
+
+def print_frame_comment(frame, out):
+    for y, line in enumerate(frame.comment_lines):
+        print("        //" + line, file=out)
         if y % 8 == 7:
             print(file=out)
 
-def img_to_roc(im):
-    w, h = im.size
-    n_rows = math.ceil(h / 8)
-    rows = []
-    for _ in range(n_rows):
-        rows.append([0 for _ in range(w)])
 
-    for y in range(h):
-        r = y // 8
-        o = y - r*8
-        for x in range(w):
-            if im.getpixel((x, y)) == BLACK:
-                rows[r][x] |= 1 << o
-    return rows
-
-
-def roc_to_hex(roc):
-    o = "{"
-    for row in roc:
-        for col in row:
-            o += " 0x%02x," % col
-    o += " }"
-
-    return o
-
-
-def sprite_to_rocs(sprite):
-    rocs = []
-    for index in sorted(sprite['frames'].keys()):
-        pos = sprite['frames'][index]
-        im = sheet.crop((
-            pos['x'],
-            pos['y'],
-            pos['x'] + sprite['w'],
-            pos['y'] + sprite['h'],
-        ))
-        rocs.append(img_to_roc(im))
-    return rocs
-
-def print_sprite_imgs(sprite, out):
-    rocs = []
-    for index in sorted(sprite['frames'].keys()):
+def print_all_frames_comments(sprite, out):
+    for index, frame in enumerate(sprite.frames):
         print("\n        // frame %d" % index, file=out)
-        pos = sprite['frames'][index]
-        im = sheet.crop((
-            pos['x'],
-            pos['y'],
-            pos['x'] + sprite['w'],
-            pos['y'] + sprite['h'],
-        ))
-        print_img(im, out)
-    return rocs
+        print_frame_comment(frame, out)
 
-def sprite_to_header(varname, sprite, out):
-    w = sprite['w']
-    h = sprite['h']
-    frames = len(sprite['frames'])
-    print("#define %s_len %d" % (varname, frames), file=out)
-    print("#define %s_w %d" % (varname, w), file=out)
-    print("#define %s_h %d" % (varname, h), file=out)
+
+def print_sprite_header(sprite, out):
+
+    print("#define %s_len %d" % (sprite.name, sprite.len), file=out)
+    print("#define %s_w %d" % (sprite.name, sprite.w), file=out)
+    print("#define %s_h %d" % (sprite.name, sprite.h), file=out)
 
     print("extern const char pgm_%s[%d][%d] PROGMEM;" % (
-        varname,
-        frames,
-        w*math.ceil(h/8),
+        sprite.name,
+        sprite.len,
+        sprite.frame_bytecount,
     ), file=out)
-    print("void s_%s(char frame, char x, char y);" % varname, file=out)
+    print("void s_%s(char frame, char x, char y);" % sprite.name, file=out)
     print(file=out)
 
-def sprite_to_pgm(varname, sprite, out):
-    rocs = sprite_to_rocs(sprite)
-    roc = rocs[0]
-    rows = len(roc)
-    cols = len(roc[0])
-    size = rows * cols
-    frames = len(rocs)
+
+def print_sprite_pgm(sprite, out):
 
     print("const char pgm_%s[%d][%d] PROGMEM = {""" % (
-        varname,
-        frames,
-        size,
+        sprite.name,
+        sprite.len,
+        sprite.frame_bytecount,
     ), file=out)
 
-    for roc in rocs:
-        print("        " + roc_to_hex(roc) +  ", ", file=out)
+    for frame in sprite.frames:
+        print("        " + frame.hex +  ", ", file=out)
     print("    };", file=out)
 
 
-
-def sprite_to_fun(varname, sprite, out):
-    rocs = sprite_to_rocs(sprite)
-    roc = rocs[0]
-    rows = len(roc)
-    cols = len(roc[0])
-    size = rows * cols
-    frames = len(rocs)
-    print("#define %s_len %d" % (varname, frames), file=out)
-    print("void s_%s(char frame, char x, char y) {" % varname, file=out)
+def print_sprite_fun(sprite, out):
+    print("void s_%s(char frame, char x, char y) {" % sprite.name, file=out)
 
     print("""
     char h = %d, r = %d, c = %d;
-    """  % (sprite['h'], rows, cols), file=out)
-    print_sprite_imgs(sprite, out);
+    """  % (sprite.h, sprite.n_rows, sprite.w), file=out)
+    print_all_frames_comments(sprite, out);
     print("""
     blit_cols(pgm_%s[frame], h, r, c, x, y);
-""" % varname, file=out)
+""" % sprite.name, file=out)
 
     print("};", file=out)
 
 
-with open("atlas.json") as f:
-    data = json.load(f)
 
-sheet = Image.open("atlas.png")
-
-sprites = {}
-
-for fname, fdata in data['frames'].items():
-    spritename, index = fname.split(' ')
-    index = int(index.split('.ase')[0])
-
-    sprite = sprites.get(spritename, {
-        'frames': {},
-        'h': fdata['frame']['h'],
-        'w': fdata['frame']['w'],
-    })
-
-    sprite['frames'][index] = {
-        'x': fdata['frame']['x'],
-        'y': fdata['frame']['y'],
-    }
-
-    sprites[spritename] = sprite
-
-with open("../src/atlas_gen.h", "w") as f:
-    print ("""/// generado por atlas_codegen.py
-#ifndef _ATLAS_GEN_H
-#define _ATLAS_GEN_H
+def codegen(sprites):
+    print('generating sprites.h')
+    with open("../src/sprites.h", "w") as f:
+        print ("""/// generado por codegen_sprites.py
+#ifndef _SPRITES_H
+#define _SPRITES_H
 
 #include <avr/pgmspace.h>
 
 void blit_cols(const char *p, char h, char r, char c, char x, char y);
 """, file=f)
 
-    for name in sorted(sprites.keys()):
-        sprite_to_header(name, sprites[name], f)
+        for sprite in sprites:
+            print_sprite_header(sprite, f)
 
-    print("""
+        print("""
 
 #endif""", file=f)
 
-with open("../src/atlas_gen.cpp", "w") as f:
-    print("""/// generado por atlas_codegen.py
-#include "atlas_gen.h"
+    print('generating sprites.cpp')
+    with open("../src/sprites.cpp", "w") as f:
+        print("""/// generado por codegen_sprites.py
+#include "sprites.h"
 #include "LCD_Functions.h"
 
 void blit_cols(const char *p, char h, char r, char c, char x, char y) {
-    // optimizar, cachos de columna en vez de pixel a pixel
+    // TODO: optimizar, cachos de columna en vez de pixel a pixel
     char i, j, t, b;
     for(t=0; t<r; t++) {
         for(i=0; i<c; i++) {
@@ -191,6 +250,12 @@ void blit_cols(const char *p, char h, char r, char c, char x, char y) {
     }
 };""", file=f)
 
-    for name in sorted(sprites.keys()):
-        sprite_to_pgm(name, sprites[name], f)
-        sprite_to_fun(name, sprites[name], f)
+        for sprite in sprites:
+            print_sprite_pgm(sprite, f)
+            print_sprite_fun(sprite, f)
+
+
+if __name__ == '__main__':
+    spritenames = find_gifs()
+    explode_and_scale(spritenames, TO_SCALE)
+    codegen(read_sprites())
