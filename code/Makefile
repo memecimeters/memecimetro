@@ -4,7 +4,7 @@ all: build upload serial
 
 clean:
 	ano clean
-	rm -f src/atlas_gen*
+	rm -f src/sprites.*
 	make -C sprites clean
 
 build:

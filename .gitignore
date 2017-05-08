@@ -1,11 +1,11 @@
 .build_ano
 .build_ino
 
-atlas*
 
 deps/arturo_ano/Arturo
 deps/arduino/arduino*
 
+code/src/sprites.*
 code/sprites/frames/*
 
 *.bin
