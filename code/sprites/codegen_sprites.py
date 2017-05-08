@@ -97,20 +97,22 @@ def explode(name):
     ])
 
 
-def scale(name, factor):
-    print('scaling %s x%d' % (name, factor))
-
+def scale(name, factors):
     files = [f for f in os.listdir(FRAMES_DIR) if os.path.isfile(FRAMES_DIR + f)]
-    for f in files:
-        if not f.startswith(name):
-            continue
-        tail = f[len(name):]
-        call([
-            'convert',
-            FRAMES_DIR + f,
-            '-scale', str(factor*100) + '%',
-            FRAMES_DIR + '%s_x%d' % (name, factor) + tail,
-        ])
+
+    for factor in factors:
+        print('scaling %s x%d' % (name, factor))
+        for f in files:
+            if not f.startswith(name):
+                continue
+
+            tail = f[len(name):]
+            call([
+                'convert',
+                FRAMES_DIR + f,
+                '-scale', str(factor*100) + '%',
+                FRAMES_DIR + '%s_x%d' % (name, factor) + tail,
+            ])
 
 
 def explode_and_scale(spritenames, to_scale={}):
@@ -123,8 +125,8 @@ def explode_and_scale(spritenames, to_scale={}):
         if name not in spritenames:
             continue
 
+        scale(name, factors)
         for factor in factors:
-            scale(name, factor)
             spritenames.append('%s_x%d' % (name, factor))
 
     return spritenames
