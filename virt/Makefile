@@ -19,6 +19,8 @@
 target = simduino_pcd8544demo
 simavr = ../deps/simavr/simavr
 
+all: lib obj ${target}
+
 IPATH = .
 IPATH += ${simavr}/examples/parts
 IPATH += ${simavr}/simavr/sim
@@ -31,7 +33,6 @@ include ${simavr}/examples/Makefile.opengl
 
 LDFLAGS += -lpthread -lutil -L${simavr}/simavr/${OBJ}
 
-all: lib obj ${target}
 
 board = ${OBJ}/${target}.elf
 
