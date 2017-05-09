@@ -4,14 +4,19 @@
 
 #include "sprites.h"
 #include "ui_common.h"
-#include "unny_layout.h"
-// #include "ema_layout.h"
+// #include "unny_layout.h"
+#include "ema_layout.h"
 
 // DRAW THE SPEED NUMBER
 void setUnnySpeedBig(double speed) {
   char buf[16];
   dtostrf(speed, 4, 1, buf);
-  setBigText(buf, SPEED_NUMBER_X, SPEED_NUMBER_Y);
+  if(SPEED_FONT_SIZE == 1){
+    setBigText(buf, SPEED_NUMBER_X, SPEED_NUMBER_Y);
+  }
+  if(SPEED_FONT_SIZE == 2) {
+    setBiggerText(buf, SPEED_NUMBER_X, SPEED_NUMBER_Y);
+  }
 }
 
 // DRAW THE SPEED IMAGE
