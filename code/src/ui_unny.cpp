@@ -31,8 +31,7 @@ void setUnnySpeedBig(double speed) {
 }
 
 // DRAW THE SPEED IMAGE
-void setUnnySpeedCombo() {
-  double speed = 12.4;
+void setUnnySpeedCombo(double speed) {
   setUnnySpeedBig(speed);
   s_speedometer(global_clock % speedometer_len, SPEED_IMAGE_X, SPEED_IMAGE_Y);
 }
@@ -93,10 +92,10 @@ void setUnnyDistance() {
 }
 
 // RENDER THE HEAD-UP DISPLAY
-void setUnnyHUD() {
+void setUnnyHUD(double speed) {
   setCorners();
 
-  setUnnySpeedCombo(); // X
+  setUnnySpeedCombo(speed); // X
   if(ICONSET_ROWS == 1) {
     setUnnyIcons(); //X
   } else {
