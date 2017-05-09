@@ -1,6 +1,6 @@
 all: clean codegen
 
 clean:
-	rm -f frames/*.png
+	rm -rf frames
 codegen:
-	./codegen_sprites.py
+	mkdir frames & ./codegen_sprites.py
