@@ -36,7 +36,7 @@ void setnounnyCadence() {
   }
   char buf[10];
   snprintf(buf, 10, "%4d", cadence);
-  setText(buf, 10, 28);
+  setText(buf, 10, 31);
 }
 
 void setnounnyDistance() {
