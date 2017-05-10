@@ -9,3 +9,4 @@ libelf-dev
 freeglut3-dev
 avr-libc
 imagemagick
+picocom
