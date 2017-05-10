@@ -21,5 +21,5 @@ serial:
 virt: build runsim
 
 runsim:
-	LD_LIBRARY_PATH=../deps/simavr/simavr/simavr/${OBJ}/ ../virt/${OBJ}/simduino_pcd8544demo.elf &
+	LD_LIBRARY_PATH=../virt/simavr/simavr/${OBJ}/ ../virt/${OBJ}/simduino_pcd8544demo.elf &
 	ano serial -p /tmp/simavr-uart0

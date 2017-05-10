@@ -17,7 +17,7 @@
 #	along with simavr.  If not, see <http://www.gnu.org/licenses/>.
 
 target = simduino_pcd8544demo
-simavr = ../deps/simavr/simavr
+simavr = simavr
 
 all: lib obj ${target}
 
