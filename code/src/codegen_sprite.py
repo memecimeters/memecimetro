@@ -11,7 +11,7 @@ BLACK = 1
 
 
 class Sprite:
-    def __init__(self, name, im):
+    def __init__(self, name, im, scale=1):
         self.name = name
         self.uppername = name.upper()
 
@@ -20,7 +20,7 @@ class Sprite:
 
         while True:
 
-            frame = Frame(im.copy())
+            frame = Frame(im.copy(), scale)
 
             frame.sprite = self
             frames.append(frame)
@@ -45,13 +45,17 @@ class Sprite:
 
 
 class Frame:
-    def __init__(self, im):
-        self.im = im
+    def __init__(self, im, scale):
         self.comment_lines = []
         self.roc = []
         self.hex = ''
 
+        if scale > 1:
+            w, h = im.size
+            im = im.resize((w * scale, h * scale))
+
         self.w, self.h = im.size
+
         self.n_rows = math.ceil(self.h / 8)
 
         for _ in range(self.n_rows):
@@ -147,8 +151,8 @@ def write_sprite_fun(sprite, f):
 
 if __name__ == '__main__':
 
-    if len(sys.argv) != 2:
-        print('Usage: ./codegen_sprite.py sprite.gif')
+    if len(sys.argv) < 2:
+        print('Usage: ./codegen_sprite.py sprite.gif [FACTOR]')
         exit(1)
 
     path = sys.argv[1]
@@ -157,6 +161,11 @@ if __name__ == '__main__':
     assert name.endswith('.gif')
     name = name[:-4]
 
-    sp = Sprite(name, Image.open(path))
+    factor = 1
+    if len(sys.argv) > 2:
+        factor = int(sys.argv[2])
+        name += '_x%d' % factor
+
+    sp = Sprite(name, Image.open(path), scale=factor)
 
     codegen(sp)

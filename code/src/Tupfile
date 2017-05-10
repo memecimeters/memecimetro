@@ -30,17 +30,21 @@ CFLAGS += -Wall
 # linker
 !link = |> avr-g++ -lm -mmcu=atmega328p -Wl,-Os -Wl,--gc-sections -o %o %f |>
 
+!sprite = |> python3 codegen_sprite.py %f |>
+!sprite_x2 = |> python3 codegen_sprite.py %f 2 |>
+!sprite_x3 = |> python3 codegen_sprite.py %f 3 |>
+
 # compile arduino libs
 : foreach ../etc/platform_libraries/SPI/src/*.cpp |> !cxx |> arduino/%B.o {ardu_obj}
 : foreach ../etc/cores/arduino/*.cpp |> !cxx |> arduino/%B.o {ardu_obj}
 : foreach ../etc/cores/arduino/*.c |> !cc |> arduino/%B.o {ardu_obj}
 
 # scale sprites
-: gifs/font.gif |> python3 scale.py %f 2 |> gifs/font_x2.gif
-: gifs/font.gif |> python3 scale.py %f 3 |> gifs/font_x3.gif
 
 # codegen sprites
-: foreach gifs/*.gif |> python3 codegen_sprite.py %f |> gifs/%B.cpp gifs/<gen> | gifs/%B.h
+: foreach gifs/*.gif |> !sprite |>  gifs/%B.cpp gifs/<gen> | gifs/%B.h
+: gifs/font.gif |> !sprite_x2 |> gifs/%B_x2.cpp gifs/<gen> | gifs/%B_x2.h
+: gifs/font.gif |> !sprite_x3 |> gifs/%B_x3.cpp gifs/<gen> | gifs/%B_x3.h
 : gifs/*.h |> python3 codegen_cat.py %f > %o |> sprites_gen.h
 
 # compile
