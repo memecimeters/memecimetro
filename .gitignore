@@ -13,6 +13,7 @@ code/src/gifs/*_x?.gif
 
 *.bin
 *.elf
+*.hex
 *.d
 *.o
 *~
