@@ -23,7 +23,7 @@ This table contains the hex values that represent pixels for a
 font that is 5 pixels wide and 8 pixels high. Each byte in a row
 represents one, 8-pixel, vertical column of a character. 5 bytes
 per character. */
-const char ASCII[][5] PROGMEM = {
+const unsigned char ASCII[][5] PROGMEM = {
   // First 32 characters (0x00-0x19) are ignored. These are
   // non-displayable, control characters.
    {0x00, 0x00, 0x00, 0x00, 0x00} // 0x20
@@ -138,7 +138,7 @@ to the PCD8544.
 
 Because the PCD8544 won't let us write individual pixels at a
 time, this is how we can make targeted changes to the display. */
-char displayMap[LCD_WIDTH * LCD_HEIGHT / 8] = {
+unsigned char displayMap[LCD_WIDTH * LCD_HEIGHT / 8] = {
   0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, // (0,0)->(11,7) ~ These 12 bytes cover an 8x12 block in the left corner of the display
   0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, // (12,0)->(23,7)
   0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xE0, // (24,0)->(35,7)
