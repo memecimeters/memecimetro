@@ -47,16 +47,16 @@ void setup()
 
   sei();//allow interrupts
 
-  Serial.println(F("MEMECIMETRO UP"));
-
-  Serial.println(F("lcd begin"));
   lcdBegin(); // This will setup our pins, and initialize the LCD
-
-  Serial.println(F("set contrast"));
+  updateDisplay();
   setContrast(40); // Good values range from 40-60
+
+  delay(300); // give some time for serial connection
 
   clearDisplay(WHITE);
   updateDisplay();
+
+  Serial.println(F("MEMECIMETRO UP"));
 
 }
 
