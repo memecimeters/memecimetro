@@ -1,3 +1,4 @@
+libfuse-dev
 g++
 libx11-dev
 libxcursor-dev
@@ -8,5 +9,4 @@ avrdude
 libelf-dev
 freeglut3-dev
 avr-libc
-imagemagick
 picocom

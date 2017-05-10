@@ -1,6 +1,6 @@
 #include "ui_common.h"
 
-#include "sprites.h"
+#include "sprites_gen.h"
 
 void setCorners() {
   char u = 0, d = HEIGHT-corner_h, l = 0, r = WIDTH-corner_w;

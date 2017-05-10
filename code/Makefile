@@ -1,14 +1,14 @@
 OBJ := obj-${shell gcc -dumpmachine}
 
-all: build upload serial
+all: tup build upload serial
+
+tup:
+	tup
 
 clean:
 	ano clean
-	rm -f src/sprites.*
-	make -C sprites clean
 
 build:
-	make -C sprites
 	ano build
 
 upload:

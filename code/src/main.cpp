@@ -1,5 +1,8 @@
 /* based on https://learn.sparkfun.com/tutorials/graphic-lcd-hookup-guide */
 
+#include "Arduino.h"
+#include "HardwareSerial.h"
+
 #include "LCD_Functions.h"
 //#include "ui_nounny.h"
 #include "ui_unny.h"

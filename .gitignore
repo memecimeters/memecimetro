@@ -1,3 +1,4 @@
+.tup
 .build_ano
 .build_ino
 
@@ -5,8 +6,10 @@
 deps/arturo_ano/Arturo
 deps/arduino/arduino*
 
-code/src/sprites.*
-code/sprites/frames/*
+code/src/sprites_gen.h
+code/src/gifs/*.cpp
+code/src/gifs/*.h
+code/src/gifs/*_x?.gif
 
 *.bin
 *.elf

@@ -2,7 +2,7 @@
 
 #include <Arduino.h>
 
-#include "sprites.h"
+#include "sprites_gen.h"
 #include "ui_common.h"
 // #include "unny_layout.h"
 #include "ema_layout.h"

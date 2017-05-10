@@ -1,0 +1,37 @@
+CFLAGS += -mmcu=atmega328p -DF_CPU=16000000L -DARDUINO=182 -DARDUINO_ARCH_AVR
+CFLAGS += -I../etc/cores/arduino
+CFLAGS += -I../etc/platform_libraries/SPI/src
+CFLAGS += -I../etc/platform_libraries/Serial/src
+
+# for nano
+CFLAGS += -I../etc/variants/eightanaloginputs
+
+CFLAGS += -ffunction-sections -fdata-sections
+# debug
+CFLAGS += -g
+# optimize for size
+CFLAGS += -Os
+
+# supress warnings
+CFLAGS += -w
+# show all warnings
+# CFLAGS += -Wall
+
+!cc = |> avr-gcc $(CFLAGS) -c %f -o %o |>
+!cxx = |> avr-g++ $(CFLAGS) -c %f -o %o |>
+
+: foreach ../etc/platform_libraries/SPI/src/*.cpp |> !cxx |> arduino/%B.o {ardu_obj}
+: foreach ../etc/cores/arduino/*.cpp |> !cxx |> arduino/%B.o {ardu_obj}
+: foreach ../etc/cores/arduino/*.c |> !cc |> arduino/%B.o {ardu_obj}
+
+: gifs/font.gif |> python3 scale.py %f 2 |> gifs/font_x2.gif
+: gifs/font.gif |> python3 scale.py %f 3 |> gifs/font_x3.gif
+
+: foreach gifs/*.gif |> python3 codegen_sprite.py %f |> gifs/%B.cpp gifs/<gen> | gifs/%B.h
+: gifs/*.h |> python3 codegen_cat.py %f > %o  |> sprites_gen.h
+
+: foreach gifs/*.cpp | gifs/*.h |> !cxx |> gifs/%B.o {gifs_obj}
+
+: foreach *.cpp | sprites_gen.h gifs/<gen> |> !cxx |> %B.o {obj}
+: {ardu_obj} {obj} {gifs_obj} |> avr-g++ -lm -mmcu=atmega328p -Wl,-Os -Wl,--gc-sections -o %o %f -lm |> firmware.elf
+: firmware.elf |> avr-objcopy -O ihex -R .eeprom %f %o |> firmware.hex
