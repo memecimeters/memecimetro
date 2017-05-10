@@ -8,9 +8,10 @@
 - asegurarse de estar en el grupo `dialout` (ubuntu) o `uucp` (arch)
   - `gpasswd -a USER GROUP` para agregarse
   - `su USER` para abrir un shell con el grupo actualizado (sin tener que hacer logout/login)
+- clonar este repo
+- `git submodule init && git submodule update`
 
 ### uso
-- `tup init` inicializa la db de tup
 - `make -C virt` compila el simulador (y simavr)
 - `tup` compila todo (salvo el simulador)
 - `./runvirt.sh` ejecuta en simulador
