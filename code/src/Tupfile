@@ -3,35 +3,50 @@ CFLAGS += -I../etc/cores/arduino
 CFLAGS += -I../etc/platform_libraries/SPI/src
 CFLAGS += -I../etc/platform_libraries/Serial/src
 
+# TODO: tup variants
 # for nano
 CFLAGS += -I../etc/variants/eightanaloginputs
+# for mega
+# CFLAGS += -I../etc/variants/mega
 
 CFLAGS += -ffunction-sections -fdata-sections
+
 # debug
-CFLAGS += -g
+# CFLAGS += -g
+
 # optimize for size
 CFLAGS += -Os
 
 # supress warnings
-CFLAGS += -w
-# show all warnings
-# CFLAGS += -Wall
+# CFLAGS += -w
 
+# show all warnings
+CFLAGS += -Wall
+
+# compilers
 !cc = |> avr-gcc $(CFLAGS) -c %f -o %o |>
 !cxx = |> avr-g++ $(CFLAGS) -c %f -o %o |>
 
+# linker
+!link = |> avr-g++ -lm -mmcu=atmega328p -Wl,-Os -Wl,--gc-sections -o %o %f |>
+
+# compile arduino libs
 : foreach ../etc/platform_libraries/SPI/src/*.cpp |> !cxx |> arduino/%B.o {ardu_obj}
 : foreach ../etc/cores/arduino/*.cpp |> !cxx |> arduino/%B.o {ardu_obj}
 : foreach ../etc/cores/arduino/*.c |> !cc |> arduino/%B.o {ardu_obj}
 
+# scale sprites
 : gifs/font.gif |> python3 scale.py %f 2 |> gifs/font_x2.gif
 : gifs/font.gif |> python3 scale.py %f 3 |> gifs/font_x3.gif
 
+# codegen sprites
 : foreach gifs/*.gif |> python3 codegen_sprite.py %f |> gifs/%B.cpp gifs/<gen> | gifs/%B.h
-: gifs/*.h |> python3 codegen_cat.py %f > %o  |> sprites_gen.h
+: gifs/*.h |> python3 codegen_cat.py %f > %o |> sprites_gen.h
 
+# compile
 : foreach gifs/*.cpp | gifs/*.h |> !cxx |> gifs/%B.o {gifs_obj}
-
 : foreach *.cpp | sprites_gen.h gifs/<gen> |> !cxx |> %B.o {obj}
-: {ardu_obj} {obj} {gifs_obj} |> avr-g++ -lm -mmcu=atmega328p -Wl,-Os -Wl,--gc-sections -o %o %f -lm |> firmware.elf
+
+# link
+: {ardu_obj} {obj} {gifs_obj} |> !link |> firmware.elf
 : firmware.elf |> avr-objcopy -O ihex -R .eeprom %f %o |> firmware.hex
