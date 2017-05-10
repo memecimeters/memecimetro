@@ -1,10 +1,4 @@
 .tup
-.build_ano
-.build_ino
-
-
-deps/arturo_ano/Arturo
-deps/arduino/arduino*
 
 code/src/sprites_gen.h
 code/src/gifs/*.cpp
