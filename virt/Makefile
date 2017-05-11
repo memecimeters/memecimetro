@@ -19,7 +19,7 @@
 target = simduino_pcd8544demo
 simavr = simavr
 
-all: lib obj ${target}
+all: lib obj ${target} mv
 
 IPATH = .
 IPATH += ${simavr}/examples/parts
@@ -49,3 +49,7 @@ clean: clean-${OBJ}
 
 lib:
 	cd ${simavr}/simavr; make
+
+mv:
+	mv ${board} memeemu.elf
+	rm -r ${OBJ}

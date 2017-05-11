@@ -10,12 +10,12 @@
   - `su USER` para abrir un shell con el grupo actualizado (sin tener que hacer logout/login)
 - clonar este repo
 - `git submodule init && git submodule update`
+- `make -C virt/simavr` compila simavr
 
 ### uso
-- `make -C virt` compila el simulador (y simavr)
-- `tup` compila todo (salvo el simulador)
 - `./runvirt.sh` ejecuta en simulador
 - `./upload.sh` upload a arduino
+- (ambos comandos corren `tup` antes, que compila si es necesario)
 
 #### cosas que usamos
 - [tup](http://gittup.org/tup/)

@@ -152,8 +152,11 @@ initGL (int w, int h, float pix_size)
 	// Double buffered, RGB disp mode.
 	glutInitDisplayMode (GLUT_RGB | GLUT_DOUBLE);
 	glutInitWindowSize (w * pix_size, h * pix_size);
-	glutCreateWindow ("PCD8544 (Nokia 5110) 84x48 LED");
-
+	#ifdef MEGA
+	glutCreateWindow ("memecimetro emu MEGA");
+	#else
+	glutCreateWindow ("memecimetro emu nano");
+	#endif
 	// Set up projection matrix
 	glMatrixMode (GL_PROJECTION);
 	// Start with an identity matrix
