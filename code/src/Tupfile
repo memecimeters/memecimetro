@@ -2,13 +2,16 @@ CFLAGS += -I../etc/cores/arduino
 CFLAGS += -I../etc/platform_libraries/SPI/src
 CFLAGS += -I../etc/platform_libraries/Serial/src
 
-# TODO: tup variants
+# see tup.config on repo root
+ifndef CONFIG_MEGA
 # for nano
 MCU = atmega328p
 CFLAGS += -I../etc/variants/eightanaloginputs
+else
 # for mega (WIP, don't use)
-# MCU = atmega2560
-# CFLAGS += -I../etc/variants/mega
+MCU = atmega2560
+CFLAGS += -I../etc/variants/mega
+endif
 
 CFLAGS += -mmcu=$(MCU) -DF_CPU=16000000L -DARDUINO=182 -DARDUINO_ARCH_AVR
 CFLAGS += -ffunction-sections -fdata-sections
