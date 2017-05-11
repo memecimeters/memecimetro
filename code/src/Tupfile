@@ -1,14 +1,16 @@
-CFLAGS += -mmcu=atmega328p -DF_CPU=16000000L -DARDUINO=182 -DARDUINO_ARCH_AVR
 CFLAGS += -I../etc/cores/arduino
 CFLAGS += -I../etc/platform_libraries/SPI/src
 CFLAGS += -I../etc/platform_libraries/Serial/src
 
 # TODO: tup variants
 # for nano
+MCU = atmega328p
 CFLAGS += -I../etc/variants/eightanaloginputs
-# for mega
+# for mega (WIP, don't use)
+# MCU = atmega2560
 # CFLAGS += -I../etc/variants/mega
 
+CFLAGS += -mmcu=$(MCU) -DF_CPU=16000000L -DARDUINO=182 -DARDUINO_ARCH_AVR
 CFLAGS += -ffunction-sections -fdata-sections
 
 # debug
@@ -28,7 +30,7 @@ CFLAGS += -Wall
 !cxx = |> avr-g++ $(CFLAGS) -c %f -o %o |>
 
 # linker
-!link = |> avr-g++ -lm -mmcu=atmega328p -Wl,-Os -Wl,--gc-sections -o %o %f |>
+!link = |> avr-g++ -lm -mmcu=$(MCU) -Wl,-Os -Wl,--gc-sections -o %o %f |>
 
 !sprite = |> python3 codegen_sprite.py %f |>
 !sprite_x2 = |> python3 codegen_sprite.py %f 2 |>

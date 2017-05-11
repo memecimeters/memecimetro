@@ -178,9 +178,14 @@ int
 main (int argc, char *argv[])
 {
 	struct avr_flash flash_data;
-	char boot_path[1024] = ".build_ano/nano/firmware.hex";
+	char boot_path[1024] = "firmware.hex";
 	uint32_t boot_base, boot_size;
+
+	#ifdef MEGA
+	char * mmcu = "atmega2560";
+	#else
 	char * mmcu = "atmega328p";
+	#endif
 	uint32_t freq = 1;
 	int debug = 0;
 	int verbose = 0;
@@ -209,10 +214,7 @@ main (int argc, char *argv[])
 		fprintf(stderr, "%s: Unable to load %s\n", argv[0], boot_path);
 		exit(1);
 	}
-	if (boot_base > 32*1024*1024) {
-		mmcu = "atmega2560";
-		freq = 20000000;
-	}
+
 	printf("%s booloader 0x%05x: %d bytes\n", mmcu, boot_base, boot_size);
 
 	snprintf(flash_data.avr_flash_path, sizeof(flash_data.avr_flash_path),
@@ -247,12 +249,21 @@ main (int argc, char *argv[])
 	// PCD8544 wired to the SPI bus, with the following additional pins:
 	pcd8544_wiring_t wiring =
 	{
+		#ifdef MEGA
+		.chip_select.port = 'H',
+		.chip_select.pin = 4,
+		.data_command.port = 'E',
+		.data_command.pin = 3,
+		.reset.port = 'H',
+		.reset.pin = 3,
+		#else
 		.chip_select.port = 'D',
 		.chip_select.pin = 7,
 		.data_command.port = 'D',
 		.data_command.pin = 5,
 		.reset.port = 'D',
 		.reset.pin = 6,
+		#endif
 	};
 
 	pcd8544_connect (&pcd8544, &wiring);
