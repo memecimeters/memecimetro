@@ -61,7 +61,7 @@ ISR(TIMER1_COMPA_vect) {//Interrupt at freq of 1kHz to measure reed switch
   reedVal = digitalRead(reed);//get val of A0
   if (!reedVal){//if reed switch is closed
     if (reedCounter == 0){//min time between pulses has passed
-      mph = (56.8*float(circumference))/float(timer);//calculate miles per hour
+      mph = (91.4*float(circumference))/float(timer);//calculate miles per hour
       timer = 0;//reset timer
       reedCounter = maxReedCounter;//reset reedCounter
     }
