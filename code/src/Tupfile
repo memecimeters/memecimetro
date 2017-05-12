@@ -44,8 +44,6 @@ CFLAGS += -Wall
 : foreach ../etc/cores/arduino/*.cpp |> !cxx |> arduino/%B.o {ardu_obj}
 : foreach ../etc/cores/arduino/*.c |> !cc |> arduino/%B.o {ardu_obj}
 
-# scale sprites
-
 # codegen sprites
 : foreach gifs/*.gif |> !sprite |>  gifs/%B.cpp gifs/<gen> | gifs/%B.h
 : gifs/font.gif |> !sprite_x2 |> gifs/%B_x2.cpp gifs/<gen> | gifs/%B_x2.h
