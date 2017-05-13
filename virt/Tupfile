@@ -1,0 +1,7 @@
+ifdef CONFIG_MEGA
+!make = |> CPPFLAGS=-DMEGA=yeah make |>
+else
+!make = |> make |>
+endif
+
+: pcd8544_* |> !make |> memeemu.elf

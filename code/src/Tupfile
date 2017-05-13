@@ -1,0 +1,59 @@
+CFLAGS += -I../etc/cores/arduino
+CFLAGS += -I../etc/platform_libraries/SPI/src
+CFLAGS += -I../etc/platform_libraries/Serial/src
+
+# see tup.config on repo root
+ifndef CONFIG_MEGA
+# for nano
+MCU = atmega328p
+CFLAGS += -I../etc/variants/eightanaloginputs
+else
+# for mega (WIP, don't use)
+MCU = atmega2560
+CFLAGS += -I../etc/variants/mega
+endif
+
+CFLAGS += -mmcu=$(MCU) -DF_CPU=16000000L -DARDUINO=182 -DARDUINO_ARCH_AVR
+CFLAGS += -ffunction-sections -fdata-sections
+
+# debug
+# CFLAGS += -g
+
+# optimize for size
+CFLAGS += -Os
+
+# supress warnings
+# CFLAGS += -w
+
+# show all warnings
+CFLAGS += -Wall
+
+# compilers
+!cc = |> avr-gcc $(CFLAGS) -c %f -o %o |>
+!cxx = |> avr-g++ $(CFLAGS) -c %f -o %o |>
+
+# linker
+!link = |> avr-g++ -lm -mmcu=$(MCU) -Wl,-Os -Wl,--gc-sections -o %o %f |>
+
+!sprite = |> python3 codegen_sprite.py %f |>
+!sprite_x2 = |> python3 codegen_sprite.py %f 2 |>
+!sprite_x3 = |> python3 codegen_sprite.py %f 3 |>
+
+# compile arduino libs
+: foreach ../etc/platform_libraries/SPI/src/*.cpp |> !cxx |> arduino/%B.o {ardu_obj}
+: foreach ../etc/cores/arduino/*.cpp |> !cxx |> arduino/%B.o {ardu_obj}
+: foreach ../etc/cores/arduino/*.c |> !cc |> arduino/%B.o {ardu_obj}
+
+# codegen sprites
+: foreach gifs/*.gif |> !sprite |>  gifs/%B.cpp gifs/<gen> | gifs/%B.h
+: gifs/font.gif |> !sprite_x2 |> gifs/%B_x2.cpp gifs/<gen> | gifs/%B_x2.h
+: gifs/font.gif |> !sprite_x3 |> gifs/%B_x3.cpp gifs/<gen> | gifs/%B_x3.h
+: gifs/*.h |> python3 codegen_cat.py %f > %o |> sprites_gen.h
+
+# compile
+: foreach gifs/*.cpp | gifs/*.h |> !cxx |> gifs/%B.o {gifs_obj}
+: foreach *.cpp | sprites_gen.h gifs/<gen> |> !cxx |> %B.o {obj}
+
+# link
+: {ardu_obj} {obj} {gifs_obj} |> !link |> firmware.elf
+: firmware.elf |> avr-objcopy -O ihex -R .eeprom %f %o |> firmware.hex

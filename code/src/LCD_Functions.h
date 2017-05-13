@@ -19,7 +19,7 @@ This table contains the hex values that represent pixels for a
 font that is 5 pixels wide and 8 pixels high. Each byte in a row
 represents one, 8-pixel, vertical column of a character. 5 bytes
 per character. */
-extern const char ASCII[][5] PROGMEM;
+extern const unsigned char ASCII[][5] PROGMEM;
 /* The displayMap variable stores a buffer representation of the
 pixels on our display. There are 504 total bits in this array,
 same as how many pixels there are on a 84 x 48 display.
@@ -34,7 +34,7 @@ to the PCD8544.
 
 Because the PCD8544 won't let us write individual pixels at a
 time, this is how we can make targeted changes to the display. */
-extern char displayMap[LCD_WIDTH * LCD_HEIGHT / 8];
+extern unsigned char displayMap[LCD_WIDTH * LCD_HEIGHT / 8];
 
 void LCDWrite(char data_or_command, char data);
 void setPixel(int x, int y, char bw);
