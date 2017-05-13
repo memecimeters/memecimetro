@@ -12,7 +12,7 @@ unsigned int global_clock = 0;
 double cadence = 0;
 int reedVal;
 long timer;
-double mph;
+double kmh;
 float radius = 13.5;
 float circumference;
 int maxReedCounter = 100;//min time (in ms) of one rotation (for debouncing)
@@ -64,7 +64,7 @@ ISR(TIMER1_COMPA_vect) {//Interrupt at freq of 1kHz to measure reed switch
   reedVal = digitalRead(reed);//get val of A0
   if (!reedVal){//if reed switch is closed
     if (reedCounter == 0){//min time between pulses has passed
-      mph = (56.8*float(circumference))/float(timer);//calculate miles per hour
+      kmh = (91.4*float(circumference))/float(timer);//calculate km/h = 1/(inches per km) * (miliseconds per hr) * (circumference / timer) = 91.4
       timer = 0;//reset timer
       reedCounter = maxReedCounter;//reset reedCounter
     }
@@ -80,7 +80,7 @@ ISR(TIMER1_COMPA_vect) {//Interrupt at freq of 1kHz to measure reed switch
     }
   }
   if (timer > 2000){
-    mph = 0;//if no new pulses from reed switch- tire is still, set mph to 0
+    kmh = 0;//if no new pulses from reed switch- tire is still, set kmh to 0
   }
   else{
     timer += 1;//increment timer
@@ -91,7 +91,7 @@ void loop()
 {
   clearDisplay(WHITE);
   //setnounnyHUD();
-  setUnnyHUD(mph);
+  setUnnyHUD(kmh);
   updateDisplay();
 
   global_clock++;
