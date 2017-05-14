@@ -40,7 +40,7 @@ int currentHours() {
 }
 
 void wakeUpNow() {
-  Serial.println("-----------------------WAKING UP-----------------");
+  Serial.println("-[=[   ＷＡＫＩＮＧ　ＵＰ   ]=]-");
   analogWrite(9, 255);
   lastActionTime = currentTime();
 }
@@ -59,16 +59,14 @@ void sleepNow() {
 }
 
 void checkSleepTime() {
-  Serial.println("lastActionTime:");
-  Serial.println(lastActionTime);
   if(currentTime() >= (lastActionTime + sleepThreshold)) {
-    Serial.println("-[=[   SLEEP TIME   ]=]-");
+    Serial.println("-[=[   ＳＬＥＥＰ　ＴＩＭＥ   ]=]-");
     sleepNow();
   }
 }
 
 void registerActionTime() {
-  Serial.println("registerActionTime");
+  Serial.println("-[=[   ＡＣＴＩＯＮ　ＲＥＧＩＳＴＥＲＥＤ   ]=]-");
   lastActionTime = currentTime();
 }
 // DRAW THE SPEED NUMBER
