@@ -17,7 +17,8 @@ float radius = 13.5;
 float circumference;
 int maxReedCounter = 100;//min time (in ms) of one rotation (for debouncing)
 int reedCounter;
-
+int buttonPin = 12;
+int wakePin = 2;
 
 void setup()
 {
@@ -27,6 +28,10 @@ void setup()
   reedCounter = maxReedCounter;
   circumference = 2*3.14*radius;
   pinMode(reed, INPUT_PULLUP);
+  pinMode(buttonPin, INPUT);
+  pinMode(wakePin, INPUT);
+  digitalWrite(9, LOW);
+  attachInterrupt(0, wakeUpNow, LOW);
 
   // TIMER SETUP- the timer interrupt allows precise timed measurements of the reed switch
   //for more info about configuration of arduino timers see http://arduino.cc/playground/Code/Timer1
@@ -93,6 +98,12 @@ void loop()
   //setnounnyHUD();
   setUnnyHUD(mph);
   updateDisplay();
+  checkSleepTime();
+
+  // THIS IS JUST FOR TESTING THE MEME
+  if(digitalRead(buttonPin)){
+    registerActionTime(); // <--- THIS SHOULD BE CALL EVERYTIME A SENSOR SENSE SOMETHING.
+  }
 
   global_clock++;
   delay(200);

@@ -29,3 +29,6 @@
 //ICON SET RIGHT
 #define ICONSET_RIGHT_X 18
 #define ICONSET_RIGHT_Y 15
+
+// SLEEP TIME THRESHOLD
+#define sleepThreshold 10

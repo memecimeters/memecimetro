@@ -1,13 +1,14 @@
 #include "ui_unny.h"
 
 #include <Arduino.h>
-
+#include <avr/sleep.h>
 #include "sprites_gen.h"
 #include "ui_common.h"
+#include "LCD_Functions.h"
 
 // #include "unny_layout.h"
 #include "ema_layout.h"
-
+int lastActionTime;
 /*
      /.--------. <<<<*>>>>  .--------.
     / .-----.  \  ,#####,  /  .-----. \
@@ -22,6 +23,54 @@
    \ \/'       ＡＮＧＥＬＩＴＯ        '\/ /
 */
 
+int currentTime() {
+  return millis()/1000;
+}
+
+int currentSeconds() {
+  return (millis()/1000) % 60;
+}
+
+int currentMinutes() {
+  return ((millis()/1000) / 60) % 60;
+}
+
+int currentHours() {
+  return (((millis()/1000) / 60) / 60) % 60;
+}
+
+void wakeUpNow() {
+  Serial.println("-----------------------WAKING UP-----------------");
+  analogWrite(9, 255);
+  lastActionTime = currentTime();
+}
+
+void sleepNow() {
+  clearDisplay(0);
+  analogWrite(9, 0);
+  updateDisplay();
+  set_sleep_mode(SLEEP_MODE_PWR_DOWN);
+  sleep_enable();
+  attachInterrupt(0,wakeUpNow, LOW);
+  sleep_mode();
+  sleep_disable();
+  // THE PROGRAM CONTINUES FROM HERE AFTER WAKING UP
+  detachInterrupt(0);
+}
+
+void checkSleepTime() {
+  Serial.println("lastActionTime:");
+  Serial.println(lastActionTime);
+  if(currentTime() >= (lastActionTime + sleepThreshold)) {
+    Serial.println("-[=[   SLEEP TIME   ]=]-");
+    sleepNow();
+  }
+}
+
+void registerActionTime() {
+  Serial.println("registerActionTime");
+  lastActionTime = currentTime();
+}
 // DRAW THE SPEED NUMBER
 void setUnnySpeedBig(double speed) {
   char buf[16];
@@ -74,14 +123,9 @@ void setUnnyCadence() {
 
 // DRAW THE TIME NUMBER
 void setUnnyTime() {
-  char x = TIME_NUMBER_X, y = TIME_NUMBER_Y;
-  char m, s;
-  int g = global_clock / 6;
-  s = g % 60;
-  m = g - s;
   char buf[10];
-  snprintf(buf, 10, "%02d:%02d", m, s);
-  setText(buf, x, y);
+  snprintf(buf, 10, "%02d:%02d", currentMinutes(), currentSeconds());
+  setText(buf, TIME_NUMBER_X, TIME_NUMBER_Y);
 }
 
 // DRAW THE DISTANCE NUMBER
