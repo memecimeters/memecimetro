@@ -5,7 +5,7 @@
 // SPEED NUMBER
 #define SPEED_NUMBER_X  29
 #define SPEED_NUMBER_Y 6
-#define SPEED_FONT_SIZE 1
+#define SPEED_FONT_SIZE 2
 
 // SPEED IMAGE
 #define SPEED_IMAGE_X  1
