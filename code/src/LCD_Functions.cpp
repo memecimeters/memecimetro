@@ -1,9 +1,10 @@
 #include "LCD_Functions.h"
-
 #include <Arduino.h>
 #include <avr/pgmspace.h>
 #include "SPI.h"
-
+#include "ui_unny.h"
+#include "unny_layout.h"
+#include "le_wild_vars.h"
 
 /* Pin definitions:
 Most of these pins can be moved to any digital or analog pin.
@@ -14,7 +15,7 @@ const int rstPin = 6;   // RST - Reset, pin 4 on LCD.
 const int dcPin = 5;    // DC - Data/Command, pin 5 on LCD.
 const int sdinPin = 11;  // DN(MOSI) - Serial data, pin 6 on LCD.
 const int sclkPin = 13;  // SCLK - Serial clock, pin 7 on LCD.
-const int blPin = 9;    // LED - Backlight LED, pin 8 on LCD.
+const int blPin = BACKLIGHT_PIN;    // LED - Backlight LED, pin 8 on LCD.
 
 
 

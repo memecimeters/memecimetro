@@ -2,10 +2,11 @@
 
 #include "Arduino.h"
 #include "HardwareSerial.h"
-
-#include "LCD_Functions.h"
-//#include "ui_nounny.h"
 #include "ui_unny.h"
+#include "unny_layout.h"
+#include "LCD_Functions.h"
+#include "sleep.h"
+#include "le_wild_vars.h"
 
 #define reed A0
 unsigned int global_clock = 0;
@@ -30,7 +31,7 @@ void setup()
   pinMode(reed, INPUT_PULLUP);
   pinMode(buttonPin, INPUT);
   pinMode(wakePin, INPUT);
-  digitalWrite(9, LOW);
+  digitalWrite(BACKLIGHT_PIN, LOW);
   attachInterrupt(0, wakeUpNow, LOW);
 
   // TIMER SETUP- the timer interrupt allows precise timed measurements of the reed switch

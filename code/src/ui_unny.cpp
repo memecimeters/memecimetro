@@ -1,14 +1,13 @@
 #include "ui_unny.h"
 
 #include <Arduino.h>
-#include <avr/sleep.h>
 #include "sprites_gen.h"
 #include "ui_common.h"
 #include "LCD_Functions.h"
-
+#include "sleep.h"
+#include "clock.h"
 // #include "unny_layout.h"
 #include "ema_layout.h"
-int lastActionTime;
 /*
      /.--------. <<<<*>>>>  .--------.
     / .-----.  \  ,#####,  /  .-----. \
@@ -23,52 +22,6 @@ int lastActionTime;
    \ \/'       ＡＮＧＥＬＩＴＯ        '\/ /
 */
 
-int currentTime() {
-  return millis()/1000;
-}
-
-int currentSeconds() {
-  return (millis()/1000) % 60;
-}
-
-int currentMinutes() {
-  return ((millis()/1000) / 60) % 60;
-}
-
-int currentHours() {
-  return (((millis()/1000) / 60) / 60) % 60;
-}
-
-void wakeUpNow() {
-  Serial.println("-[=[   ＷＡＫＩＮＧ　ＵＰ   ]=]-");
-  analogWrite(9, 255);
-  lastActionTime = currentTime();
-}
-
-void sleepNow() {
-  clearDisplay(0);
-  analogWrite(9, 0);
-  updateDisplay();
-  set_sleep_mode(SLEEP_MODE_PWR_DOWN);
-  sleep_enable();
-  attachInterrupt(0,wakeUpNow, LOW);
-  sleep_mode();
-  sleep_disable();
-  // THE PROGRAM CONTINUES FROM HERE AFTER WAKING UP
-  detachInterrupt(0);
-}
-
-void checkSleepTime() {
-  if(currentTime() >= (lastActionTime + sleepThreshold)) {
-    Serial.println("-[=[   ＳＬＥＥＰ　ＴＩＭＥ   ]=]-");
-    sleepNow();
-  }
-}
-
-void registerActionTime() {
-  Serial.println("-[=[   ＡＣＴＩＯＮ　ＲＥＧＩＳＴＥＲＥＤ   ]=]-");
-  lastActionTime = currentTime();
-}
 // DRAW THE SPEED NUMBER
 void setUnnySpeedBig(double speed) {
   char buf[16];
