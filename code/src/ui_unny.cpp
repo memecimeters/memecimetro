@@ -1,13 +1,13 @@
 #include "ui_unny.h"
 
 #include <Arduino.h>
-
 #include "sprites_gen.h"
 #include "ui_common.h"
-
+#include "LCD_Functions.h"
+#include "sleep.h"
+#include "clock.h"
 // #include "unny_layout.h"
 #include "ema_layout.h"
-
 /*
      /.--------. <<<<*>>>>  .--------.
     / .-----.  \  ,#####,  /  .-----. \
@@ -74,14 +74,9 @@ void setUnnyCadence() {
 
 // DRAW THE TIME NUMBER
 void setUnnyTime() {
-  char x = TIME_NUMBER_X, y = TIME_NUMBER_Y;
-  char m, s;
-  int g = global_clock / 6;
-  s = g % 60;
-  m = g - s;
   char buf[10];
-  snprintf(buf, 10, "%02d:%02d", m, s);
-  setText(buf, x, y);
+  snprintf(buf, 10, "%02d:%02d", currentMinutes(), currentSeconds());
+  setText(buf, TIME_NUMBER_X, TIME_NUMBER_Y);
 }
 
 // DRAW THE DISTANCE NUMBER

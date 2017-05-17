@@ -2,10 +2,11 @@
 
 #include "Arduino.h"
 #include "HardwareSerial.h"
-
-#include "LCD_Functions.h"
-//#include "ui_nounny.h"
 #include "ui_unny.h"
+#include "unny_layout.h"
+#include "LCD_Functions.h"
+#include "sleep.h"
+#include "le_wild_vars.h"
 
 #define reed A0
 unsigned int global_clock = 0;
@@ -17,7 +18,8 @@ float radius = 13.5;
 float circumference;
 int maxReedCounter = 100;//min time (in ms) of one rotation (for debouncing)
 int reedCounter;
-
+int buttonPin = 12;
+int wakePin = 2;
 
 void setup()
 {
@@ -27,6 +29,10 @@ void setup()
   reedCounter = maxReedCounter;
   circumference = 2*3.14*radius;
   pinMode(reed, INPUT_PULLUP);
+  pinMode(buttonPin, INPUT);
+  pinMode(wakePin, INPUT);
+  digitalWrite(BACKLIGHT_PIN, LOW);
+  attachInterrupt(0, wakeUpNow, LOW);
 
   // TIMER SETUP- the timer interrupt allows precise timed measurements of the reed switch
   //for more info about configuration of arduino timers see http://arduino.cc/playground/Code/Timer1
@@ -93,6 +99,12 @@ void loop()
   //setnounnyHUD();
   setUnnyHUD(kmh);
   updateDisplay();
+  checkSleepTime();
+
+  // THIS IS JUST FOR TESTING THE MEME
+  if(digitalRead(buttonPin)){
+    registerActionTime(); // <--- THIS SHOULD BE CALL EVERYTIME A SENSOR SENSE SOMETHING.
+  }
 
   global_clock++;
   delay(200);
