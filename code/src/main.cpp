@@ -3,7 +3,6 @@
 #include "Arduino.h"
 #include "HardwareSerial.h"
 #include "ui_unny.h"
-#include "unny_layout.h"
 #include "LCD_Functions.h"
 #include "sleep.h"
 #include "le_wild_vars.h"

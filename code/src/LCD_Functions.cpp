@@ -3,7 +3,6 @@
 #include <avr/pgmspace.h>
 #include "SPI.h"
 #include "ui_unny.h"
-#include "unny_layout.h"
 #include "le_wild_vars.h"
 
 /* Pin definitions:
