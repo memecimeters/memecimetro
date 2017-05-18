@@ -5,4 +5,4 @@
 #define BACKLIGHT_PIN 9
 
 //WHEEL RADIUS
-#define RADIUS 13.5
+#define WHEEL_RADIUS_CSM 13.5

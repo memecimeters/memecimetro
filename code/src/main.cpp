@@ -14,7 +14,7 @@ double cadence = 0;
 int reedVal;
 long timer;
 double kmh;
-float radius = RADIUS;
+float radius = WHEEL_RADIUS_CSM;
 float circumference;
 int maxReedCounter = 100;//min time (in ms) of one rotation (for debouncing)
 int reedCounter;
