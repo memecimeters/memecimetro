@@ -14,7 +14,7 @@ double cadence = 0;
 int reedVal;
 long timer;
 double kmh;
-float radius = 13.5;
+float radius = RADIUS;
 float circumference;
 int maxReedCounter = 100;//min time (in ms) of one rotation (for debouncing)
 int reedCounter;
@@ -27,7 +27,7 @@ void setup()
   digitalWrite(13, 1);
 
   reedCounter = maxReedCounter;
-  circumference = 2*3.14*radius;
+  circumference = 2*3.14159*radius;
   pinMode(reed, INPUT_PULLUP);
   pinMode(buttonPin, INPUT);
   pinMode(wakePin, INPUT);
@@ -71,6 +71,7 @@ ISR(TIMER1_COMPA_vect) {//Interrupt at freq of 1kHz to measure reed switch
   if (!reedVal){//if reed switch is closed
     if (reedCounter == 0){//min time between pulses has passed
       kmh = (91.4*float(circumference))/float(timer);//calculate km/h = 1/(inches per km) * (miliseconds per hr) * (circumference / timer) = 91.4
+      registerActionTime();
       timer = 0;//reset timer
       reedCounter = maxReedCounter;//reset reedCounter
     }
@@ -100,11 +101,6 @@ void loop()
   setUnnyHUD(kmh);
   updateDisplay();
   checkSleepTime();
-
-  // THIS IS JUST FOR TESTING THE MEME
-  if(digitalRead(buttonPin)){
-    registerActionTime(); // <--- THIS SHOULD BE CALL EVERYTIME A SENSOR SENSE SOMETHING.
-  }
 
   global_clock++;
   delay(200);
