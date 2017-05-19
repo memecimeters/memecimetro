@@ -13,10 +13,12 @@ int reedVal;
 long timer;
 double kmh;
 double rpm;
+double distance;
 float radius = WHEEL_RADIUS_CSM;
 float circumference;
 int maxReedCounter = 100;//min time (in ms) of one rotation (for debouncing)
 int reedCounter;
+int reedCounterTotal;
 int buttonPin = 12;
 int wakePin = 2;
 
@@ -71,6 +73,8 @@ ISR(TIMER1_COMPA_vect) {//Interrupt at freq of 1kHz to measure reed switch
     if (reedCounter == 0){//min time between pulses has passed
       kmh = (91.4*float(circumference))/float(timer);//calculate km/h = 1/(inches per km) * (miliseconds per hr) * (circumference / timer) = 91.4
       rpm = (kmh / WHEEL_DEVELOPMENT)/60; //http://www.tariksaleh.com/bike/geartospeed.pdf
+      reedCounterTotal = 1 + reedCounterTotal;
+      distance = reedCounterTotal * WHEEL_DEVELOPMENT;
       registerActionTime();
       timer = 0;//reset timer
       reedCounter = maxReedCounter;//reset reedCounter
@@ -98,7 +102,7 @@ ISR(TIMER1_COMPA_vect) {//Interrupt at freq of 1kHz to measure reed switch
 void loop()
 {
   clearDisplay(WHITE);
-  setUnnyHUD(kmh, rpm);
+  setUnnyHUD(kmh, rpm, distance);
   updateDisplay();
   checkSleepTime();
 

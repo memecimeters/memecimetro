@@ -76,18 +76,14 @@ void setUnnyTime() {
 }
 
 // DRAW THE DISTANCE NUMBER
-void setUnnyDistance() {
+void setUnnyDistance(double dist) {
   char buf[16];
-  double dist = 1.2f*global_clock*global_clock;
-  if (dist > 9999.9) {
-    dist = 9999.9;
-  }
   dtostrf(dist, 5, 1, buf);
   setText(buf, DISTANCE_NUMBER_X, DISTANCE_NUMBER_Y);
 }
 
 // RENDER THE HEAD-UP DISPLAY
-void setUnnyHUD(double speed, double cadence) {
+void setUnnyHUD(double speed, double cadence, double dist) {
   setCorners();
 
   setUnnySpeedCombo(speed); // X
@@ -100,5 +96,5 @@ void setUnnyHUD(double speed, double cadence) {
   setUnnyCadence(cadence); //X
   // MAX SPEED VA ACÁ
   setUnnyTime();
-  setUnnyDistance(); //X
+  setUnnyDistance(dist); //X
 }
