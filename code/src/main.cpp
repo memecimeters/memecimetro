@@ -88,6 +88,7 @@ ISR(TIMER1_COMPA_vect) {//Interrupt at freq of 1kHz to measure reed switch
   }
   if (timer > 2000){
     kmh = 0;//if no new pulses from reed switch- tire is still, set kmh to 0
+    rpm = 0;
   }
   else{
     timer += 1;//increment timer
