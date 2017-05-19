@@ -97,7 +97,6 @@ ISR(TIMER1_COMPA_vect) {//Interrupt at freq of 1kHz to measure reed switch
 void loop()
 {
   clearDisplay(WHITE);
-  //setnounnyHUD();
   setUnnyHUD(kmh, rpm);
   updateDisplay();
   checkSleepTime();
