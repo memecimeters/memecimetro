@@ -9,10 +9,10 @@
 
 #define reed A0
 unsigned int global_clock = 0;
-double cadence = 0;
 int reedVal;
 long timer;
 double kmh;
+double rpm;
 float radius = WHEEL_RADIUS_CSM;
 float circumference;
 int maxReedCounter = 100;//min time (in ms) of one rotation (for debouncing)
@@ -70,6 +70,7 @@ ISR(TIMER1_COMPA_vect) {//Interrupt at freq of 1kHz to measure reed switch
   if (!reedVal){//if reed switch is closed
     if (reedCounter == 0){//min time between pulses has passed
       kmh = (91.4*float(circumference))/float(timer);//calculate km/h = 1/(inches per km) * (miliseconds per hr) * (circumference / timer) = 91.4
+      rpm = (kmh / WHEEL_DEVELOPMENT)/60; //http://www.tariksaleh.com/bike/geartospeed.pdf
       registerActionTime();
       timer = 0;//reset timer
       reedCounter = maxReedCounter;//reset reedCounter
@@ -97,7 +98,7 @@ void loop()
 {
   clearDisplay(WHITE);
   //setnounnyHUD();
-  setUnnyHUD(kmh);
+  setUnnyHUD(kmh, rpm);
   updateDisplay();
   checkSleepTime();
 

@@ -62,12 +62,9 @@ void setnounnyIconsright() {
 
 
 // DRAW THE CADENCE NUMBER
-void setUnnyCadence() {
-  if (global_clock % 6 == 0) {
-    cadence = random(100);
-  }
-  char buf[10];
-  snprintf(buf, 10, "%4d", cadence);
+void setUnnyCadence(double cadence) {
+  char buf[16];
+  dtostrf(cadence, 4, 1, buf);
   setText(buf, CADENCE_NUMBER_X, CADENCE_NUMBER_Y);
 }
 
@@ -90,7 +87,7 @@ void setUnnyDistance() {
 }
 
 // RENDER THE HEAD-UP DISPLAY
-void setUnnyHUD(double speed) {
+void setUnnyHUD(double speed, double cadence) {
   setCorners();
 
   setUnnySpeedCombo(speed); // X
@@ -100,7 +97,7 @@ void setUnnyHUD(double speed) {
     setnounnyIconsleft();
     setnounnyIconsright();
   }
-  setUnnyCadence(); //X
+  setUnnyCadence(cadence); //X
   // MAX SPEED VA ACÁ
   setUnnyTime();
   setUnnyDistance(); //X
