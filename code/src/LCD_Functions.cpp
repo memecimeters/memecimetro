@@ -3,7 +3,7 @@
 #include <avr/pgmspace.h>
 #include "SPI.h"
 #include "ui_unny.h"
-#include "le_wild_vars.h"
+#include "config.h"
 
 /* Pin definitions:
 Most of these pins can be moved to any digital or analog pin.

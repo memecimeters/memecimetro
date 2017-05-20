@@ -6,7 +6,7 @@
 #include "LCD_Functions.h"
 #include "sleep.h"
 #include "clock.h"
-#include "le_wild_vars.h"
+#include "config.h"
 /*
      /.--------. <<<<*>>>>  .--------.
     / .-----.  \  ,#####,  /  .-----. \

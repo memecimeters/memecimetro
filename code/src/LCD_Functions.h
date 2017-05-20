@@ -1,8 +1,6 @@
 #ifndef _LCD_FUNCTIONS_H
 #define _LCD_FUNCTIONS_H
-
 #include <avr/pgmspace.h>
-
 
 /* PCD8544-specific defines: */
 #define LCD_COMMAND  0

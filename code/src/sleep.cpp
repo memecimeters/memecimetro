@@ -3,7 +3,7 @@
 #include "Arduino.h"
 #include "LCD_Functions.h"
 #include "sleep.h"
-#include "le_wild_vars.h"
+#include "config.h"
 int lastActionTime;
 
 void wakeUpNow() {

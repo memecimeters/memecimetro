@@ -5,7 +5,7 @@
 #include "ui_unny.h"
 #include "LCD_Functions.h"
 #include "sleep.h"
-#include "le_wild_vars.h"
+#include "config.h"
 
 #define reed A0
 unsigned int global_clock = 0;
