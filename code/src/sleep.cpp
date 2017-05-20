@@ -2,9 +2,8 @@
 #include <avr/sleep.h>
 #include "Arduino.h"
 #include "LCD_Functions.h"
-#include "unny_layout.h"
 #include "sleep.h"
-#include "le_wild_vars.h"
+#include "config.h"
 int lastActionTime;
 
 void wakeUpNow() {

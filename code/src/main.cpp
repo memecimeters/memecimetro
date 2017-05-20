@@ -3,21 +3,22 @@
 #include "Arduino.h"
 #include "HardwareSerial.h"
 #include "ui_unny.h"
-#include "unny_layout.h"
 #include "LCD_Functions.h"
 #include "sleep.h"
-#include "le_wild_vars.h"
+#include "config.h"
 
 #define reed A0
 unsigned int global_clock = 0;
-double cadence = 0;
 int reedVal;
 long timer;
 double kmh;
-float radius = 13.5;
+double rpm;
+double distance;
+float radius = WHEEL_RADIUS_CSM;
 float circumference;
 int maxReedCounter = 100;//min time (in ms) of one rotation (for debouncing)
 int reedCounter;
+int reedCounterTotal;
 int buttonPin = 12;
 int wakePin = 2;
 
@@ -27,7 +28,7 @@ void setup()
   digitalWrite(13, 1);
 
   reedCounter = maxReedCounter;
-  circumference = 2*3.14*radius;
+  circumference = 2*3.14159*radius;
   pinMode(reed, INPUT_PULLUP);
   pinMode(buttonPin, INPUT);
   pinMode(wakePin, INPUT);
@@ -71,6 +72,10 @@ ISR(TIMER1_COMPA_vect) {//Interrupt at freq of 1kHz to measure reed switch
   if (!reedVal){//if reed switch is closed
     if (reedCounter == 0){//min time between pulses has passed
       kmh = (91.4*float(circumference))/float(timer);//calculate km/h = 1/(inches per km) * (miliseconds per hr) * (circumference / timer) = 91.4
+      rpm = (kmh / WHEEL_DEVELOPMENT)/60; //http://www.tariksaleh.com/bike/geartospeed.pdf
+      reedCounterTotal = 1 + reedCounterTotal;
+      distance = reedCounterTotal * WHEEL_DEVELOPMENT;
+      registerActionTime();
       timer = 0;//reset timer
       reedCounter = maxReedCounter;//reset reedCounter
     }
@@ -87,6 +92,7 @@ ISR(TIMER1_COMPA_vect) {//Interrupt at freq of 1kHz to measure reed switch
   }
   if (timer > 2000){
     kmh = 0;//if no new pulses from reed switch- tire is still, set kmh to 0
+    rpm = 0;
   }
   else{
     timer += 1;//increment timer
@@ -96,15 +102,9 @@ ISR(TIMER1_COMPA_vect) {//Interrupt at freq of 1kHz to measure reed switch
 void loop()
 {
   clearDisplay(WHITE);
-  //setnounnyHUD();
-  setUnnyHUD(kmh);
+  setUnnyHUD(kmh, rpm, distance);
   updateDisplay();
   checkSleepTime();
-
-  // THIS IS JUST FOR TESTING THE MEME
-  if(digitalRead(buttonPin)){
-    registerActionTime(); // <--- THIS SHOULD BE CALL EVERYTIME A SENSOR SENSE SOMETHING.
-  }
 
   global_clock++;
   delay(200);

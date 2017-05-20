@@ -6,8 +6,7 @@
 #include "LCD_Functions.h"
 #include "sleep.h"
 #include "clock.h"
-// #include "unny_layout.h"
-#include "ema_layout.h"
+#include "config.h"
 /*
      /.--------. <<<<*>>>>  .--------.
     / .-----.  \  ,#####,  /  .-----. \
@@ -63,12 +62,9 @@ void setnounnyIconsright() {
 
 
 // DRAW THE CADENCE NUMBER
-void setUnnyCadence() {
-  if (global_clock % 6 == 0) {
-    cadence = random(100);
-  }
-  char buf[10];
-  snprintf(buf, 10, "%4d", cadence);
+void setUnnyCadence(double cadence) {
+  char buf[16];
+  dtostrf(cadence, 4, 1, buf);
   setText(buf, CADENCE_NUMBER_X, CADENCE_NUMBER_Y);
 }
 
@@ -80,18 +76,14 @@ void setUnnyTime() {
 }
 
 // DRAW THE DISTANCE NUMBER
-void setUnnyDistance() {
+void setUnnyDistance(double dist) {
   char buf[16];
-  double dist = 1.2f*global_clock*global_clock;
-  if (dist > 9999.9) {
-    dist = 9999.9;
-  }
   dtostrf(dist, 5, 1, buf);
   setText(buf, DISTANCE_NUMBER_X, DISTANCE_NUMBER_Y);
 }
 
 // RENDER THE HEAD-UP DISPLAY
-void setUnnyHUD(double speed) {
+void setUnnyHUD(double speed, double cadence, double dist) {
   setCorners();
 
   setUnnySpeedCombo(speed); // X
@@ -101,8 +93,8 @@ void setUnnyHUD(double speed) {
     setnounnyIconsleft();
     setnounnyIconsright();
   }
-  setUnnyCadence(); //X
+  setUnnyCadence(cadence); //X
   // MAX SPEED VA ACÁ
   setUnnyTime();
-  setUnnyDistance(); //X
+  setUnnyDistance(dist); //X
 }
