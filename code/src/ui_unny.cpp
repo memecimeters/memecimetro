@@ -71,7 +71,7 @@ void setUnnyCadence(double cadence) {
 // DRAW THE AVG NUMBER
 void setUnnyAVG(double avg) {
   char buf[16];
-  dtostrf(avg, 4, 2, buf);
+  dtostrf(avg, 4, 1, buf);
   setText(buf, AVG_NUMBER_X, AVG_NUMBER_Y);
 }
 
