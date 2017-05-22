@@ -84,8 +84,11 @@ void setUnnyDistance(double dist) {
 
 // RENDER THE HEAD-UP DISPLAY
 void setUnnyHUD(double speed, double cadence, double dist) {
+  if(SET_CORNERS == 1) {
   setCorners();
+ } else {
 
+ }
   setUnnySpeedCombo(speed); // X
   if(ICONSET_ROWS == 1) {
     setUnnyIcons(); //X

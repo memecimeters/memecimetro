@@ -38,6 +38,9 @@
 // ICON SET ROWS
 #define ICONSET_ROWS 2
 
+// CORNERS
+#define SET_CORNERS 0
+
 // ICON SET LEFT
 #define ICONSET_LEFT_X  3
 #define ICONSET_LEFT_Y 27
@@ -45,5 +48,3 @@
 //ICON SET RIGHT
 #define ICONSET_RIGHT_X  47
 #define ICONSET_RIGHT_Y 27
-
-
