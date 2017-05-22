@@ -78,7 +78,7 @@ ISR(TIMER1_COMPA_vect) {//Interrupt at freq of 1kHz to measure reed switch
       reedCounterTotal = 1 + reedCounterTotal;
       distance = reedCounterTotal * WHEEL_DEVELOPMENT;
       meme = distance / ((currentSeconds() / 60) / 60);
-      if (average < 0) {
+      if (meme < 0) {
         average = 0;
       } else {
         average = meme;
