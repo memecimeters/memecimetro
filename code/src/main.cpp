@@ -5,6 +5,7 @@
 #include "ui_unny.h"
 #include "LCD_Functions.h"
 #include "sleep.h"
+#include "clock.h"
 #include "config.h"
 
 #define reed A0
@@ -13,6 +14,7 @@ int reedVal;
 long timer;
 double kmh;
 double rpm;
+double average;
 double distance;
 float radius = WHEEL_RADIUS_CSM;
 float circumference;
@@ -52,7 +54,7 @@ void setup()
   // enable timer compare interrupt
   TIMSK1 |= (1 << OCIE1A);
 
-  sei();//allow interrupts
+  sei();//allow interruptsdo
 
   lcdBegin(); // This will setup our pins, and initialize the LCD
   updateDisplay();
@@ -75,6 +77,7 @@ ISR(TIMER1_COMPA_vect) {//Interrupt at freq of 1kHz to measure reed switch
       rpm = (kmh / WHEEL_DEVELOPMENT)/60; //http://www.tariksaleh.com/bike/geartospeed.pdf
       reedCounterTotal = 1 + reedCounterTotal;
       distance = reedCounterTotal * WHEEL_DEVELOPMENT;
+      average = distance / (((currentSeconds()/1000) / 60) / 60);
       registerActionTime();
       timer = 0;//reset timer
       reedCounter = maxReedCounter;//reset reedCounter
@@ -102,10 +105,10 @@ ISR(TIMER1_COMPA_vect) {//Interrupt at freq of 1kHz to measure reed switch
 void loop()
 {
   clearDisplay(WHITE);
-  setUnnyHUD(kmh, rpm, distance);
+  setUnnyHUD(kmh, rpm, average, distance);
   updateDisplay();
   checkSleepTime();
-
+  
   global_clock++;
   delay(200);
 }

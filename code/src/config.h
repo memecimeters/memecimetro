@@ -15,8 +15,12 @@
 
 /////LAYOUT OPTIONS
 // CADENCE NUMBER
-#define CADENCE_NUMBER_X  10
+#define CADENCE_NUMBER_X  12
 #define CADENCE_NUMBER_Y 28
+
+// CADENCE NUMBER
+#define AVG_NUMBER_X  42 + crankset_w + bars_w
+#define AVG_NUMBER_Y 28
 
 // SPEED NUMBER
 #define SPEED_NUMBER_X  29
@@ -38,6 +42,9 @@
 // ICON SET ROWS
 #define ICONSET_ROWS 2
 
+//CORNER ICONS
+#define CORNER_ICONS_SET 0
+
 // ICON SET LEFT
 #define ICONSET_LEFT_X  3
 #define ICONSET_LEFT_Y 27
@@ -45,5 +52,3 @@
 //ICON SET RIGHT
 #define ICONSET_RIGHT_X  47
 #define ICONSET_RIGHT_Y 27
-
-
