@@ -89,11 +89,10 @@ void setUnnyDistance(double dist) {
   setText(buf, DISTANCE_NUMBER_X, DISTANCE_NUMBER_Y);
 }
 
-// RENDER THE HEAD-UP DISPLAY
+// RENDER THE HEAD-UP DISPLAYe
 void setUnnyHUD(double speed, double cadence, double avg, double dist) {
   if(CORNER_ICONS_SET == 1) {
   setCorners();
-  }else {
   }
   setUnnySpeedCombo(speed); // X
   if(ICONSET_ROWS == 1) {

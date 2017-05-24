@@ -76,7 +76,7 @@ ISR(TIMER1_COMPA_vect) {//Interrupt at freq of 1kHz to measure reed switch
       kmh = (91.4*float(circumference))/float(timer);//calculate km/h = 1/(inches per km) * (miliseconds per hr) * (circumference / timer) = 91.4
       rpm = (kmh / WHEEL_DEVELOPMENT)/60; //http://www.tariksaleh.com/bike/geartospeed.pdf
       reedCounterTotal = 1 + reedCounterTotal;
-      distance = reedCounterTotal * WHEEL_DEVELOPMENT;
+      distance = reedCounterTotal * circumference * 2.54e-5;
       average =  distance / ((currentTime() / (double)60) / 60);
       registerActionTime();
       timer = 0;//reset timer
