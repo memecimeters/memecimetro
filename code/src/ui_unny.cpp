@@ -68,6 +68,13 @@ void setUnnyCadence(double cadence) {
   setText(buf, CADENCE_NUMBER_X, CADENCE_NUMBER_Y);
 }
 
+// DRAW THE AVG NUMBER
+void setUnnyAVG(double avg) {
+  char buf[16];
+  dtostrf(avg, 4, 1, buf);
+  setText(buf, AVG_NUMBER_X, AVG_NUMBER_Y);
+}
+
 // DRAW THE TIME NUMBER
 void setUnnyTime() {
   char buf[10];
@@ -82,13 +89,11 @@ void setUnnyDistance(double dist) {
   setText(buf, DISTANCE_NUMBER_X, DISTANCE_NUMBER_Y);
 }
 
-// RENDER THE HEAD-UP DISPLAY
-void setUnnyHUD(double speed, double cadence, double dist) {
-  if(SET_CORNERS == 1) {
+// RENDER THE HEAD-UP DISPLAYe
+void setUnnyHUD(double speed, double cadence, double avg, double dist) {
+  if(CORNER_ICONS_SET == 1) {
   setCorners();
- } else {
-
- }
+  }
   setUnnySpeedCombo(speed); // X
   if(ICONSET_ROWS == 1) {
     setUnnyIcons(); //X
@@ -97,7 +102,7 @@ void setUnnyHUD(double speed, double cadence, double dist) {
     setnounnyIconsright();
   }
   setUnnyCadence(cadence); //X
-  // MAX SPEED VA ACÁ
+  setUnnyAVG(avg);
   setUnnyTime();
   setUnnyDistance(dist); //X
 }
