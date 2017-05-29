@@ -65,8 +65,6 @@ void setup()
   clearDisplay(WHITE);
   updateDisplay();
 
-  Serial.println(F("MEMECIMETRO UP"));
-
 }
 
 ISR(TIMER1_COMPA_vect) {//Interrupt at freq of 1kHz to measure reed switch

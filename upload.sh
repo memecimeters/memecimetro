@@ -2,9 +2,9 @@
 set -e
 
 FIRMWARE=code/src/firmware.hex
-TTY=/dev/ttyUSB0
+TTY=/dev/ttyUSB3
 
-tup
+~/.local/bin/tup/tup
 
 source tup.config
 
