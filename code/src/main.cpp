@@ -7,6 +7,8 @@
 #include "sleep.h"
 #include "clock.h"
 #include "config.h"
+#include "EEPROM.h"
+#include "EEPROMAnything.h"
 
 #define reed A0
 unsigned int global_clock = 0;
@@ -16,26 +18,33 @@ double kmh;
 double rpm;
 double average;
 double distance;
+double memoryDistance;
+double displayDistance;
 float radius = WHEEL_RADIUS_CSM;
 float circumference;
 int maxReedCounter = 100;//min time (in ms) of one rotation (for debouncing)
 int reedCounter;
 int reedCounterTotal;
-int buttonPin = 12;
 int wakePin = 2;
+bool sendToSleep = false;
 
 void setup()
 {
   Serial.begin(9600);
   digitalWrite(13, 1);
 
+  EEPROM_readAnything(0, memoryDistance);
+  if (memoryDistance != memoryDistance) {
+    memoryDistance = 0;
+  }
+  displayDistance = memoryDistance;
+
   reedCounter = maxReedCounter;
   circumference = 2*3.14159*radius;
   pinMode(reed, INPUT_PULLUP);
-  pinMode(buttonPin, INPUT);
   pinMode(wakePin, INPUT);
   digitalWrite(BACKLIGHT_PIN, LOW);
-  attachInterrupt(0, wakeUpNow, LOW);
+  attachInterrupt(digitalPinToInterrupt(2), wakeUpNow, LOW);
 
   // TIMER SETUP- the timer interrupt allows precise timed measurements of the reed switch
   //for more info about configuration of arduino timers see http://arduino.cc/playground/Code/Timer1
@@ -75,7 +84,8 @@ ISR(TIMER1_COMPA_vect) {//Interrupt at freq of 1kHz to measure reed switch
       rpm = (kmh / WHEEL_DEVELOPMENT)/60; //http://www.tariksaleh.com/bike/geartospeed.pdf
       reedCounterTotal = 1 + reedCounterTotal;
       distance = reedCounterTotal * circumference * 2.54e-5;
-      average =  distance / ((currentTime() / (double)60) / 60);
+      displayDistance = distance + memoryDistance;
+      average = distance / ((currentTime() / (double)60) / 60);
       registerActionTime();
       timer = 0;//reset timer
       reedCounter = maxReedCounter;//reset reedCounter
@@ -104,9 +114,13 @@ ISR(TIMER1_COMPA_vect) {//Interrupt at freq of 1kHz to measure reed switch
 void loop()
 {
   clearDisplay(WHITE);
-  setUnnyHUD(kmh, rpm, average, distance);
+  setUnnyHUD(kmh, rpm, average, displayDistance);
   updateDisplay();
-  checkSleepTime();
+  if(shouldISleepNow()){
+    EEPROM_writeAnything(0, displayDistance);
+    sleepNow();
+  }
+
 
   global_clock++;
   delay(200);
