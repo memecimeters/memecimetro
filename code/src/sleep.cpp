@@ -24,10 +24,8 @@ void sleepNow() {
   detachInterrupt(0);
 }
 
-void checkSleepTime() {
-  if(currentTime() >= (lastActionTime + SLEEP_THRESHOLD_SECS)) {
-    sleepNow();
-  }
+bool shouldISleepNow() {
+  return currentTime() >= (lastActionTime + SLEEP_THRESHOLD_SECS); 
 }
 
 void registerActionTime() {

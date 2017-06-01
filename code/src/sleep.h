@@ -3,7 +3,7 @@
 
 void wakeUpNow();
 void sleepNow();
-void checkSleepTime();
+bool shouldISleepNow();
 void registerActionTime();
 
 #endif
