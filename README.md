@@ -70,3 +70,7 @@
 - [simavr](https://github.com/buserror/simavr)
 - GNU/Linux, Ubuntu, gcc-avr, avrdude, freglut3, make, python, etc
 - www.instructables.com/id/Arduino-Bike-Speedometer/
+
+### upload to minipro
+`avrdude -C/usr/share/arduino/hardware/tools/avrdude.conf -v -v -v -v -patmega328p -carduino -P/dev/ttyACM2 -b57600 -D -Uflash:w:code/src/firmware.hex:i ~`
+
