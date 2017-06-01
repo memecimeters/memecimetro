@@ -15,7 +15,7 @@
 
 ### uso
 - `./runvirt.sh` ejecuta en simulador
-- `./upload.sh` upload a arduino
+- `./upload.sh nano/promini/mega` upload a arduino nano/promini/mega
 - (ambos comandos corren `tup` antes, que compila si es necesario)
 
 ### customización
@@ -51,7 +51,7 @@
 
 ### use
 - `./runvirt.sh` execute simavr
-- `./upload.sh` upload to arduino
+- `./upload.sh nano/promini/mega` upload to arduino nano/promini/mega
 - (both commands run 'tup' before, it compiles if is necessary)
 
 ### customization
@@ -70,7 +70,3 @@
 - [simavr](https://github.com/buserror/simavr)
 - GNU/Linux, Ubuntu, gcc-avr, avrdude, freglut3, make, python, etc
 - www.instructables.com/id/Arduino-Bike-Speedometer/
-
-### upload to minipro
-`avrdude -C/usr/share/arduino/hardware/tools/avrdude.conf -v -v -v -v -patmega328p -carduino -P/dev/ttyACM2 -b57600 -D -Uflash:w:code/src/firmware.hex:i ~`
-
