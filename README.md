@@ -15,7 +15,7 @@
 
 ### uso
 - `./runvirt.sh` ejecuta en simulador
-- `./upload.sh nano/promini/mega` upload a arduino nano/promini/mega
+- `./upload.sh nano/promini/mega` upload a arduino nano/promini 5v 16Mhz/mega
 - (ambos comandos corren `tup` antes, que compila si es necesario)
 
 ### customización
@@ -51,7 +51,7 @@
 
 ### use
 - `./runvirt.sh` execute simavr
-- `./upload.sh nano/promini/mega` upload to arduino nano/promini/mega
+- `./upload.sh nano/promini/mega` upload to arduino nano/promini 5v 16Mhz/mega
 - (both commands run 'tup' before, it compiles if is necessary)
 
 ### customization
