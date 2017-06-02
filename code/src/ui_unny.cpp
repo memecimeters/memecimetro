@@ -42,8 +42,6 @@ void setUnnySpeedCombo(double speed) {
 // DRAW THE ICON SET
 void setUnnyIcons() {
   int x = ICONSET_LEFT_X, y = ICONSET_LEFT_Y, i = 0;
-  Serial.println(ICONSET_LEFT_Y);
-  Serial.println(ICONSET_LEFT_X);
   s_crankset(global_clock % crankset_len, ICONSET_LEFT_X, y + (i++)*8);
   s_road(global_clock % road_len, x, y + (i++)*8);
   s_bars(global_clock % bars_len, x, y + (i++)*8);

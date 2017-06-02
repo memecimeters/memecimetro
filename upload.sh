@@ -1,25 +1,36 @@
 #!/bin/bash
 set -e
-
+if [ $# -eq 0 ]
+ then
+  echo "Usage: $0 nano/promini/mega"
+  exit
+fi
 FIRMWARE=code/src/firmware.hex
-TTY=/dev/ttyUSB0
-
-tup
-
-source tup.config
 
 # chequea que NO este seteado mega
-if [ -z "$CONFIG_MEGA" ]; then
-  # nano
+# nano
+case "$1" in
+  "nano")
   MCU=atmega328p
   PROG=arduino
   BAUD=57600
-else
-  # mega
+  TTY=/dev/ttyUSB0
+  ;;
+"mega")
   MCU=atmega2560
   PROG=wiring
   BAUD=115200
-fi
+  TTY=/dev/ttyUSB0
+  ;;
+"promini")
+  MCU=atmega328p
+  PROG=arduino
+  BAUD=57600
+  TTY=/dev/ttyACM0
+  ;;
+esac
+
+tup
 
 avrdude \
   -C ./etc/avrdude.conf \

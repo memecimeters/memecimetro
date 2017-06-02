@@ -7,7 +7,6 @@
 int lastActionTime;
 
 void wakeUpNow() {
-  Serial.println("-[=[   ＷＡＫＩＮＧ　ＵＰ   ]=]-");
   analogWrite(BACKLIGHT_PIN, 255);
   registerActionTime();
 }
@@ -25,14 +24,10 @@ void sleepNow() {
   detachInterrupt(0);
 }
 
-void checkSleepTime() {
-  if(currentTime() >= (lastActionTime + SLEEP_THRESHOLD_SECS)) {
-    Serial.println("-[=[   ＳＬＥＥＰ　ＴＩＭＥ   ]=]-");
-    sleepNow();
-  }
+bool shouldISleepNow() {
+  return currentTime() >= (lastActionTime + SLEEP_THRESHOLD_SECS); 
 }
 
 void registerActionTime() {
-  Serial.println("-[=[   ＡＣＴＩＯＮ　ＲＥＧＩＳＴＥＲＥＤ   ]=]-");
   lastActionTime = currentTime();
 }
