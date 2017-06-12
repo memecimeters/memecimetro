@@ -44,7 +44,6 @@ void setup()
   pinMode(reed, INPUT_PULLUP);
   pinMode(wakePin, INPUT);
   digitalWrite(BACKLIGHT_PIN, LOW);
-  attachInterrupt(digitalPinToInterrupt(2), wakeUpNow, LOW);
 
   // TIMER SETUP- the timer interrupt allows precise timed measurements of the reed switch
   //for more info about configuration of arduino timers see http://arduino.cc/playground/Code/Timer1
@@ -89,11 +88,6 @@ ISR(TIMER1_COMPA_vect) {//Interrupt at freq of 1kHz to measure reed switch
       registerActionTime();
       timer = 0;//reset timer
       reedCounter = maxReedCounter;//reset reedCounter
-    }
-    else{
-      if (reedCounter > 0){//don't let reedCounter go negative
-        //reedCounter -= 1;//decrement reedCounter
-      }
     }
   }
   else{//if reed switch is open
