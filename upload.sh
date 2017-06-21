@@ -10,7 +10,7 @@ FIRMWARE=code/src/firmware.hex
 # chequea que NO este seteado mega
 # nano
 case "$1" in
-  "nano")
+"nano")
   MCU=atmega328p
   PROG=arduino
   BAUD=57600
@@ -28,6 +28,13 @@ case "$1" in
   BAUD=57600
   TTY=/dev/ttyACM0
   ;;
+"uno")
+  MCU=atmega328p
+  PROG=arduino
+  BAUD=115200
+  TTY=/dev/ttyACM0
+  ;;
+
 esac
 
 tup
