@@ -27,6 +27,7 @@ int reedCounter;
 int reedCounterTotal;
 int wakePin = 2;
 bool sendToSleep = false;
+float pressLength_milliSeconds = 0;
 
 void setup()
 {
@@ -42,7 +43,7 @@ void setup()
   reedCounter = maxReedCounter;
   circumference = 2*3.14159*radius;
   pinMode(reed, INPUT_PULLUP);
-  pinMode(wakePin, INPUT);
+  pinMode(wakePin, INPUT_PULLUP);
   digitalWrite(BACKLIGHT_PIN, LOW);
 
   // TIMER SETUP- the timer interrupt allows precise timed measurements of the reed switch
@@ -107,14 +108,27 @@ ISR(TIMER1_COMPA_vect) {//Interrupt at freq of 1kHz to measure reed switch
 
 void loop()
 {
+
   clearDisplay(WHITE);
   setUnnyHUD(kmh, rpm, average, displayDistance);
   updateDisplay();
+
+  while (digitalRead(wakePin) == LOW ){
+    delay(100);
+    pressLength_milliSeconds = pressLength_milliSeconds + 100;
+  }
+
   if(shouldISleepNow()){
     EEPROM_writeAnything(0, displayDistance);
     sleepNow();
   }
 
+  if(pressLength_milliSeconds > PRESS_TIME_TO_SLEEP){
+    EEPROM_writeAnything(0, displayDistance);
+    //TODO - Make function to reset timer
+    sleepNow();
+  }
+  pressLength_milliSeconds = 0;
 
   global_clock++;
   delay(200);
