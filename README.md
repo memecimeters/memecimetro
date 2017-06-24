@@ -70,3 +70,4 @@
 - [simavr](https://github.com/buserror/simavr)
 - GNU/Linux, Ubuntu, gcc-avr, avrdude, freglut3, make, python, etc
 - www.instructables.com/id/Arduino-Bike-Speedometer/
+- http://www.electronicsmayhem.com/?p=31 
