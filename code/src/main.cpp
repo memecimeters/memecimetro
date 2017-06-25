@@ -9,6 +9,7 @@
 #include "config.h"
 #include "EEPROM.h"
 #include "EEPROMAnything.h"
+#include "SoftReset.h"
 
 #define reed A0
 unsigned int global_clock = 0;
@@ -127,6 +128,7 @@ void loop()
     EEPROM_writeAnything(0, displayDistance);
     //TODO - Make function to reset timer
     sleepNow();
+    softReset();
   }
   pressLength_milliSeconds = 0;
 

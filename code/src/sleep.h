@@ -5,5 +5,6 @@ void wakeUpNow();
 void sleepNow();
 bool shouldISleepNow();
 void registerActionTime();
+void softReset();
 
 #endif
