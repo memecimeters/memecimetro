@@ -4,17 +4,18 @@
 #include "LCD_Functions.h"
 #include "sleep.h"
 #include "config.h"
+
 int lastActionTime;
 
 void wakeUpNow() {
   detachInterrupt(digitalPinToInterrupt(2));
-  analogWrite(BACKLIGHT_PIN, 255);
+  turnOnBacklight();
   registerActionTime();
 }
 
 void sleepNow() {
   clearDisplay(0);
-  analogWrite(BACKLIGHT_PIN, 0);
+  turnOffBacklight();
   updateDisplay();
   attachInterrupt(digitalPinToInterrupt(2), wakeUpNow, LOW);
   set_sleep_mode(SLEEP_MODE_PWR_DOWN);

@@ -9,12 +9,13 @@
 Most of these pins can be moved to any digital or analog pin.
 DN(MOSI)and SCLK should be left where they are (SPI pins). The
 LED (backlight) pin should remain on a PWM-capable pin. */
-const int scePin = 7;   // SCE - Chip select, pin 3 on LCD.
-const int rstPin = 6;   // RST - Reset, pin 4 on LCD.
-const int dcPin = 5;    // DC - Data/Command, pin 5 on LCD.
-const int sdinPin = 11;  // DN(MOSI) - Serial data, pin 6 on LCD.
-const int sclkPin = 13;  // SCLK - Serial clock, pin 7 on LCD.
-const int blPin = BACKLIGHT_PIN;    // LED - Backlight LED, pin 8 on LCD.
+const int scePin     = 7;   // SCE - Chip select, pin 3 on LCD.
+const int rstPin     = 6;   // RST - Reset, pin 4 on LCD.
+const int dcPin      = 5;    // DC - Data/Command, pin 5 on LCD.
+const int sdinPin    = 11;  // DN(MOSI) - Serial data, pin 6 on LCD.
+const int sclkPin    = 13;  // SCLK - Serial clock, pin 7 on LCD.
+const int blPin      = BACKLIGHT_PIN;    // LED - Backlight LED, pin 8 on LCD.
+bool backlight_is_on = true;
 
 
 
@@ -369,4 +370,27 @@ void lcdBegin(void)
   //We must send 0x20 before modifying the display control mode
   LCDWrite(LCD_COMMAND, 0x20);
   LCDWrite(LCD_COMMAND, 0x0C); //Set display control, normal mode.
+}
+
+void toggleBacklight() {
+  if(backlight_is_on) {
+    turnOffBacklight();
+  }
+  else {
+    turnOnBacklight();
+  }
+}
+
+void turnOnBacklight() {
+  setBacklight(BRIGHTNESS);
+  backlight_is_on = true;
+}
+
+void turnOffBacklight() {
+  setBacklight(0);
+  backlight_is_on = false;
+}
+
+void setBacklight(int amount) {
+  analogWrite(blPin, amount);
 }

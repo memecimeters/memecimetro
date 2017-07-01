@@ -45,7 +45,7 @@ void setup()
   circumference = 2*3.14159*radius;
   pinMode(reed, INPUT_PULLUP);
   pinMode(wakePin, INPUT_PULLUP);
-  digitalWrite(BACKLIGHT_PIN, LOW);
+  turnOffBacklight();
 
   // TIMER SETUP- the timer interrupt allows precise timed measurements of the reed switch
   //for more info about configuration of arduino timers see http://arduino.cc/playground/Code/Timer1
@@ -126,10 +126,14 @@ void loop()
 
   if(pressLength_milliSeconds > PRESS_TIME_TO_SLEEP){
     EEPROM_writeAnything(0, displayDistance);
-    //TODO - Make function to reset timer
     sleepNow();
     softReset();
   }
+
+  if(pressLength_milliSeconds >= PRESS_TIME_TO_TOGGLE_BACKLIGHT){
+    toggleBacklight();
+  }
+
   pressLength_milliSeconds = 0;
 
   global_clock++;

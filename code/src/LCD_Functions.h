@@ -55,4 +55,12 @@ void invertDisplay();
 
 void lcdBegin(void);
 
+void turnOffBacklight();
+
+void turnOnBacklight();
+
+void setBacklight(int amount);
+
+void toggleBacklight();
+
 #endif
