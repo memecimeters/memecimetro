@@ -34,7 +34,7 @@ case "$1" in
   BAUD=115200
   TTY=/dev/ttyACM0
   ;;
-"programer")
+"programmer")
     MCU=atmega328p
     PROG=usbasp
     BAUD=57600

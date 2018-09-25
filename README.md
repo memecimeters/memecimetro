@@ -15,7 +15,7 @@
   - `make -C virt/simavr` compila simavr
 
 ### uso
-- `./upload.sh nano/promini/mega` upload a arduino nano/promini 5v 16Mhz/mega
+- `./upload.sh nano/promini/mega/programmer` upload a arduino nano/promini 5v 16Mhz/mega
 - (ambos comandos corren `tup` antes, que compila si es necesario)
 - `./runvirt.sh` ejecuta en simulador si optaste por simavr
 - si querés usar simulide
@@ -57,7 +57,7 @@
   - `make -C virt/simavr` compile simavr
 
 ### use
-- `./upload.sh nano/promini/mega` upload to arduino nano/promini 5v 16Mhz/mega
+- `./upload.sh nano/promini/mega/programmer` upload to arduino nano/promini 5v 16Mhz/mega
 - (both commands run 'tup' before, it compiles if is necessary)
 - `./runvirt.sh` execute simavr if you choose it
 - to use with simulide
