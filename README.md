@@ -10,13 +10,18 @@
   - `gpasswd -a USER GROUP` para agregarse
   - `su USER` para abrir un shell con el grupo actualizado (sin tener que hacer logout/login)
 - clonar este repo
-- `git submodule init && git submodule update` clonar repo de simavr
-- `make -C virt/simavr` compila simavr
+- opcional si querés usar simavr
+  - `git submodule init && git submodule update` clonar repo de simavr
+  - `make -C virt/simavr` compila simavr
+- opcional si querés usar simulide
+  - ejecutar `tup`
+  - abrir memecimetro.simu en simulide
+  - abrir code/src/firmware.hex y "uplodearlo"
 
 ### uso
-- `./runvirt.sh` ejecuta en simulador
 - `./upload.sh nano/promini/mega` upload a arduino nano/promini 5v 16Mhz/mega
 - (ambos comandos corren `tup` antes, que compila si es necesario)
+- `./runvirt.sh` ejecuta en simulador si optaste por simavr
 
 ### customización
 - en el archivo code/src/config.h se configuran las cosas como
@@ -47,13 +52,19 @@
   - `gpasswd -a USER GROUP` if not
   - `su USER` to open a new sheel with updated groups (without logout and login)
 - clone repo
-- `git submodule init && git submodule update` clone simavr repo
-- `make -C virt/simavr` compile simavr
+- optional if you want to use simavr
+  - `git submodule init && git submodule update` clone simavr repo
+  - `make -C virt/simavr` compile simavr
+- optional if you want to use simulide
+  - run `tup`
+  - open memecimetro.simu with simulide
+  - open code/src/firmware.hex y "upload it"
+
 
 ### use
-- `./runvirt.sh` execute simavr
 - `./upload.sh nano/promini/mega` upload to arduino nano/promini 5v 16Mhz/mega
 - (both commands run 'tup' before, it compiles if is necessary)
+- `./runvirt.sh` execute simavr if you choose it
 
 ### customization
 - in code/src/config.h you can configure things like
@@ -72,4 +83,4 @@
 - [simulide](https://simulide.blogspot.com/)
 - GNU/Linux, Ubuntu, gcc-avr, avrdude, freglut3, make, python, etc
 - www.instructables.com/id/Arduino-Bike-Speedometer/
-- http://www.electronicsmayhem.com/?p=31 
+- http://www.electronicsmayhem.com/?p=31
