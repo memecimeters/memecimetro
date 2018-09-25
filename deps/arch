@@ -2,7 +2,7 @@ base-devel
 git
 avr-libc
 glu
-freeglut3
+freeglut
 python
 python-pillow
 python2
@@ -12,3 +12,4 @@ ninja
 avrdude
 picocom
 imagemagick
+tup
