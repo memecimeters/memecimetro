@@ -13,15 +13,15 @@
 - opcional si querés usar simavr
   - `git submodule init && git submodule update` clonar repo de simavr
   - `make -C virt/simavr` compila simavr
-- opcional si querés usar simulide
-  - ejecutar `tup`
-  - abrir memecimetro.simu en simulide
-  - abrir code/src/firmware.hex y "uplodearlo"
 
 ### uso
 - `./upload.sh nano/promini/mega` upload a arduino nano/promini 5v 16Mhz/mega
 - (ambos comandos corren `tup` antes, que compila si es necesario)
 - `./runvirt.sh` ejecuta en simulador si optaste por simavr
+- si querés usar simulide
+  - ejecutar `tup`
+  - abrir memecimetro.simu en simulide
+  - abrir code/src/firmware.hex y "uplodearlo"
 
 ### customización
 - en el archivo code/src/config.h se configuran las cosas como
@@ -55,16 +55,15 @@
 - optional if you want to use simavr
   - `git submodule init && git submodule update` clone simavr repo
   - `make -C virt/simavr` compile simavr
-- optional if you want to use simulide
-  - run `tup`
-  - open memecimetro.simu with simulide
-  - open code/src/firmware.hex y "upload it"
-
 
 ### use
 - `./upload.sh nano/promini/mega` upload to arduino nano/promini 5v 16Mhz/mega
 - (both commands run 'tup' before, it compiles if is necessary)
 - `./runvirt.sh` execute simavr if you choose it
+- to use with simulide
+  - run `tup`
+  - open memecimetro.simu with simulide
+  - open code/src/firmware.hex y "upload it"
 
 ### customization
 - in code/src/config.h you can configure things like
