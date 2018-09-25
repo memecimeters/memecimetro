@@ -32,6 +32,7 @@
 - [SparkFun's Graphic LCD Hookup Guide](https://learn.sparkfun.com/tutorials/graphic-lcd-hookup-guide)
 - [aseprite](https://github.com/aseprite/aseprite)
 - [simavr](https://github.com/buserror/simavr)
+- [simulide](https://simulide.blogspot.com/)
 - GNU/Linux, Ubuntu, gcc-avr, avrdude, freglut3, make, python, etc
 - www.instructables.com/id/Arduino-Bike-Speedometer/
 
@@ -68,6 +69,7 @@
 - [SparkFun's Graphic LCD Hookup Guide](https://learn.sparkfun.com/tutorials/graphic-lcd-hookup-guide)
 - [aseprite](https://github.com/aseprite/aseprite)
 - [simavr](https://github.com/buserror/simavr)
+- [simulide](https://simulide.blogspot.com/)
 - GNU/Linux, Ubuntu, gcc-avr, avrdude, freglut3, make, python, etc
 - www.instructables.com/id/Arduino-Bike-Speedometer/
 - http://www.electronicsmayhem.com/?p=31 
