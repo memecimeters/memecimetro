@@ -27,8 +27,8 @@
 - en el archivo code/src/config.h se configuran las cosas como
 	- las posiciones de los iconos y del texto
 	- SLEEP_THRESHOLD_SECS setea el sleep time
-	- WHEEL_DIAMETER radio de la rueda en pulgadas, incluye la goma
-	- WHEEL_DEVELOPMENT_METERS desarrollo de la rueda para calcular la cadencia y la distancia recorridaa
+	- WHEEL_DIAMETER radio de la rueda en centímetros, incluye la goma
+	- WHEEL_DEVELOPMENT_METERS desarrollo de la rueda para calcular la cadencia y la distancia recorrida
 	- existe un layout alternativo en code/src/config.h.example
 
 #### cosas que usamos
@@ -69,7 +69,7 @@
 - in code/src/config.h you can configure things like
   - position of text and icons
   - SLEEP_THRESHOLD_SECS sleep time
-  - WHEEL_DIAMETER wheel radio in inches, includes tyre
+  - WHEEL_DIAMETER wheel radio in centimeters, includes tyre
   - WHEEL_DEVELOPMENT_METERS wheel develpment to calculate cadence and distance in fixed gear bikes
   - an alternative layout exists in code/src/config.h.example
 
