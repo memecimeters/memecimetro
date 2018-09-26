@@ -21,12 +21,11 @@ double average;
 double distance;
 double memoryDistance;
 double displayDistance;
-float radius = WHEEL_RADIUS_CSM;
-float circumference;
+float circumference = WHEEL_DIAMETER_INCH;
 int maxReedCounter = 100;//min time (in ms) of one rotation (for debouncing)
 int reedCounter;
 int reedCounterTotal;
-int wakePin = 2;
+int wakePin = WAKE_PIN;
 bool sendToSleep = false;
 float pressLength_milliSeconds = 0;
 
@@ -42,7 +41,6 @@ void setup()
   displayDistance = memoryDistance;
 
   reedCounter = maxReedCounter;
-  circumference = 2*3.14159*radius;
   pinMode(reed, INPUT_PULLUP);
   pinMode(wakePin, INPUT_PULLUP);
   turnOffBacklight();
