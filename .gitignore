@@ -11,3 +11,8 @@ code/src/gifs/*_x?.gif
 *.d
 *.o
 *~
+
+# tup 4 windows mememes
+code/src/%SystemDrive%/
+tup/
+avr/
