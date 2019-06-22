@@ -32,7 +32,7 @@ float pressLength_milliSeconds = 0;
 
 void setup()
 {
-  Serial.begin(9600);
+  Serial.begin(115200);
   digitalWrite(13, 1);
 
   EEPROM_readAnything(0, memoryDistance);

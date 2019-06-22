@@ -218,7 +218,7 @@ static const char * irq_names[IRQ_PCD8544_COUNT] =
 { [IRQ_PCD8544_SPI_BYTE_IN] = "=pcd8544.SDIN", [IRQ_PCD8544_RESET
                 ] = "<pcd8544.RS", [IRQ_PCD8544_data_command
                 ] = "<pcd8544.RW", [IRQ_PCD8544_ENABLE] = "<pcd8544.E",
-                [IRQ_PCD8544_ADDR] = "7>hd44780.ADDR" };
+                [IRQ_PCD8544_ADDR] = "7>pcd8544.ADDR" };
 
 void
 pcd8544_connect (pcd8544_t * part, pcd8544_wiring_t * wiring)

@@ -36,6 +36,7 @@ LDFLAGS += -lpthread -lutil -L${simavr}/simavr/${OBJ}
 
 board = ${OBJ}/${target}.elf
 
+${board} : ${OBJ}/button.o
 ${board} : ${OBJ}/uart_pty.o
 ${board} : ${OBJ}/pcd8544_virt.o
 ${board} : ${OBJ}/pcd8544_glut.o

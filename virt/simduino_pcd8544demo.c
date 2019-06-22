@@ -32,6 +32,7 @@
 #include <unistd.h>
 
 #include "avr_ioport.h"
+#include "button.h"
 #include "sim_avr.h"
 #include "sim_elf.h"
 #include "sim_gdb.h"
@@ -98,13 +99,23 @@ void avr_special_deinit( avr_t* avr, void * data)
 	uart_pty_stop(&uart_pty);
 }
 
+button_t button;
+int do_button_press = 0;
 
 static void *
 avr_run_thread (void * ignore)
 {
+	int b_press = do_button_press;
+
 	while (1)
 	{
 		avr_run (avr);
+
+		if (do_button_press != b_press) {
+			b_press = do_button_press;
+			printf("Button pressed 33\n");
+			button_press(&button, 3333000000);
+		}
 	}
 	return NULL;
 }
@@ -115,6 +126,9 @@ keyCB (unsigned char key, int x, int y)
 {
 	switch (key)
 	{
+		case 'p':
+			do_button_press++;
+			break;
 		case 'q':
 			exit (0);
 			break;
@@ -245,6 +259,7 @@ main (int argc, char *argv[])
 	}
 
 	pcd8544_init (avr, &pcd8544, 84, 48);
+	button_init(avr, &button, "button");
 
 	uart_pty_init(avr, &uart_pty);
 	uart_pty_connect(&uart_pty, '0');
@@ -270,7 +285,11 @@ main (int argc, char *argv[])
 	};
 
 	pcd8544_connect (&pcd8544, &wiring);
+	avr_connect_irq(
+		button.irq + IRQ_BUTTON_OUT,
+		avr_io_getirq(avr, AVR_IOCTL_IOPORT_GETIRQ('C'), 0));
 
+    avr_raise_irq(button.irq + IRQ_BUTTON_OUT, 0);
 	printf ("PCD8544 display demo\n   Press 'q' to quit\n");
 
 	// Initialize GLUT system
